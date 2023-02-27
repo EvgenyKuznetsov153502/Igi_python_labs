@@ -1,5 +1,7 @@
 import say_hello
 import calculator
+import even_list
+from random import randint
 
 say_hello.print_hello()
 
@@ -23,3 +25,7 @@ while True:
 operation = input("choose an operation (add, sub, mult or div): ")
 result = calculator.calculate(num1, num2, operation)
 print("result:", result)
+
+lst = [randint(1, 20) for i in range(20)]
+print("initial list: ", lst)
+print("sorted list: ", even_list.even_list(lst))
