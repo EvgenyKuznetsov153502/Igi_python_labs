@@ -1,4 +1,4 @@
-from calculate_statistics import count_of_sent, count_of_non_dec_sent
+from calculate_statistics import count_of_sent, count_of_non_dec_sent, average_len_of_sent, average_len_of_word
 
 
 def main():
@@ -11,6 +11,8 @@ def main():
 
     print("amount of sentences in the text:", count_of_sent(text))
     print("amount of non-declarative sentences in the text:", count_of_non_dec_sent(text))
+    print("average length of the sentence in characters:", average_len_of_sent(text))
+    print("average length of the word in the text in characters:", average_len_of_word(text))
 
 
 if __name__ == '__main__':
