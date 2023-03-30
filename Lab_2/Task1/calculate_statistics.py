@@ -32,3 +32,22 @@ def average_len_of_word(message: str):
     list_of_words = re.findall(REG_EXPR_TO_WORD, message)
     num_of_char = sum(len(word) for word in list_of_words)
     return round(num_of_char/len(list_of_words), 2) if len(list_of_words) != 0 else 0
+
+
+def top_rep_n_grams(message: str, k=10, n=4):
+    list_of_words = re.findall(REG_EXPR_TO_WORD, message)
+
+    if len(list_of_words) < n:
+        return f'Input error. N ({n}) is bigger than number of words({len(list_of_words)})'
+
+    dictionary = {}
+    for i in range(len(list_of_words) - n + 1):
+        n_gram = " ".join(list_of_words[i:i+n])
+        if n_gram not in dictionary.keys():
+            dictionary[n_gram] = 1
+        else:
+            dictionary[n_gram] += 1
+
+    if len(dictionary) <= k:
+        return sorted(dictionary.items(), key=lambda x: x[1], reverse=True)
+    return sorted(dictionary.items(), key=lambda x: x[1], reverse=True)[0:k]

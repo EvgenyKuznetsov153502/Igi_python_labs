@@ -11,3 +11,6 @@ WORDS_CONTAIN_ONE_CHAR = [
 WORDS_CONTAIN_TWO_CHAR = ['e.g.', 'i.e.', 'p.s.', 'p.m.', 'a.m.']
 
 WORDS_CONTAIN_THREE_CHAR = ['v.i.p.', 'p.p.s.']
+
+K = 4
+N = 10
