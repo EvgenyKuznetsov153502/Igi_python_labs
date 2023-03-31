@@ -1,3 +1,4 @@
+import pickle
 import re
 
 
@@ -88,11 +89,14 @@ class Storage:
 
                 case 'save':
                     if self.check_input_non_arg(len_list_of_words, 'save'):
-                        print('save')
+                        self.save()
 
                 case 'load':
-                    if self.check_input_one_arg(len_list_of_words, 'load'):
-                        print('load')
+                    if self.check_input_non_arg(len_list_of_words, 'load'):
+                        try:
+                            self.load()
+                        except FileNotFoundError:
+                            print("Error, container does not exist")
 
                 case 'switch':
                     if self.check_input_one_arg(len_list_of_words, 'switch'):
@@ -157,6 +161,7 @@ class Storage:
             else:
                 break
 
+        self.__cur_user = name
         print("Do you want to load the container ? Enter 'yes' or 'no'.")
         answer = input(">")
         while answer.lower() != 'yes' and answer.lower() != 'no':
@@ -164,11 +169,33 @@ class Storage:
 
         if answer.lower() == 'yes':
             print(f'Loading a container named {name}')
+            try:
+                self.load()
+                print("Download successful")
+            except FileNotFoundError:
+                print("Error, container does not exist")
+                print('Creating a new container')
+                self.__cur_container = set()
+
         else:
             print('Creating a new container')
             self.__cur_container = set()
 
-        self.__cur_user = name
+    def save(self):
+        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/DataBase/{self.__cur_user}' + '.pickle'
+        with open(path, 'rb') as file:
+            temp_set = self.__cur_container.union(pickle.load(file))
+
+        with open(path, 'wb') as file:
+            pickle.dump(temp_set, file)
+
+    def load(self):
+        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/DataBase/{self.__cur_user}' + '.pickle'
+
+        with open(path, 'rb') as file:
+            self.__cur_container = self.__cur_container.union(pickle.load(file))
+
+
 
 
 
