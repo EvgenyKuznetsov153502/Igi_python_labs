@@ -52,6 +52,9 @@ class Storage:
                         continue
                     self.print_help()
                 case 'stop':
+                    if len(list_of_words) != 1:
+                        print('command \'stop\' does not support arguments')
+                        continue
                     print('stop program')
                     break
                 case _:
