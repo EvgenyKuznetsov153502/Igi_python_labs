@@ -1,3 +1,5 @@
+import re
+
 
 class Storage:
     """storage for unique elements"""
@@ -48,6 +50,7 @@ class Storage:
 
     def run(self):
         print("Welcome to storage for unique items")
+        self.log()
         print("To see the list of commands type help")
         print('To exit the program enter stop')
 
@@ -77,10 +80,11 @@ class Storage:
                 case 'list':
                     if self.check_input_non_arg(len_list_of_words, 'list'):
                         self.list()
+                        print("\nUserName:", self.__cur_user)
 
                 case 'grep':
                     if self.check_input_one_arg(len_list_of_words, 'grep'):
-                        print('grep')
+                        self.grep(list_of_words[1])
 
                 case 'save':
                     if self.check_input_non_arg(len_list_of_words, 'save'):
@@ -132,6 +136,48 @@ class Storage:
                 print(arg)
         else:
             print('Container is empty')
+
+    def grep(self, reg_exp):
+        flag = False
+        for arg in self.__cur_container:
+            if re.findall(reg_exp, arg):
+                print(arg)
+                flag = True
+        if not flag:
+            print('No such elements')
+
+    def log(self):
+        name = input("Enter username: \n>")
+
+        while True:
+            if len(name.split()) > 1:
+                name = input('Error input. Username must not contain spaces. Try again\n> ')
+            elif len(name.split()) == 0:
+                name = input('Error input. Username must not be empty. Try again\n> ')
+            else:
+                break
+
+        print("Do you want to load the container ? Enter 'yes' or 'no'.")
+        answer = input(">")
+        while answer.lower() != 'yes' and answer.lower() != 'no':
+            answer = input("Error input. Enter 'yes' or 'no\n>")
+
+        if answer.lower() == 'yes':
+            print(f'Loading a container named {name}')
+        else:
+            print('Creating a new container')
+            self.__cur_container = set()
+
+        self.__cur_user = name
+
+
+
+
+
+
+
+
+
 
 
 
