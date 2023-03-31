@@ -100,7 +100,8 @@ class Storage:
 
                 case 'switch':
                     if self.check_input_one_arg(len_list_of_words, 'switch'):
-                        print('switch')
+                        self.help_survey()
+                        self.switch(list_of_words[1])
 
                 case 'help':
                     if self.check_input_non_arg(len_list_of_words, 'help'):
@@ -108,6 +109,7 @@ class Storage:
 
                 case 'stop':
                     if self.check_input_non_arg(len_list_of_words, 'stop'):
+                        self.help_survey()
                         print('Stop program')
                         break
 
@@ -160,8 +162,29 @@ class Storage:
                 name = input('Error input. Username must not be empty. Try again\n> ')
             else:
                 break
+        self.switch(name)
 
+    def save(self):
+        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/DataBase/{self.__cur_user}' + '.pickle'
+
+        try:
+            with open(path, 'rb') as file:
+                temp_set = self.__cur_container.union(pickle.load(file))
+        except FileNotFoundError:
+            temp_set = set()
+
+        with open(path, 'wb') as file:
+            pickle.dump(temp_set, file)
+
+    def load(self):
+        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/DataBase/{self.__cur_user}' + '.pickle'
+
+        with open(path, 'rb') as file:
+            self.__cur_container = self.__cur_container.union(pickle.load(file))
+
+    def switch(self, name: str):
         self.__cur_user = name
+        self.__cur_container = set()
         print("Do you want to load the container ? Enter 'yes' or 'no'.")
         answer = input(">")
         while answer.lower() != 'yes' and answer.lower() != 'no':
@@ -176,39 +199,17 @@ class Storage:
                 print("Error, container does not exist")
                 print('Creating a new container')
                 self.__cur_container = set()
-
         else:
             print('Creating a new container')
             self.__cur_container = set()
 
-    def save(self):
-        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/DataBase/{self.__cur_user}' + '.pickle'
-        with open(path, 'rb') as file:
-            temp_set = self.__cur_container.union(pickle.load(file))
+    def help_survey(self):
+        answer = input('Do you want to save past container? Enter \'yes\' or \'no\'\n>')
+        while answer.lower() != 'yes' and answer.lower() != 'no':
+            answer = input("Error input. Enter 'yes' or 'no\n>")
 
-        with open(path, 'wb') as file:
-            pickle.dump(temp_set, file)
-
-    def load(self):
-        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/DataBase/{self.__cur_user}' + '.pickle'
-
-        with open(path, 'rb') as file:
-            self.__cur_container = self.__cur_container.union(pickle.load(file))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        if answer.lower() == 'yes':
+            self.save()
 
 
 
