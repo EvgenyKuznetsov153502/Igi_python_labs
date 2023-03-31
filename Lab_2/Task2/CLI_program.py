@@ -2,8 +2,8 @@
 class Storage:
     """storage for unique elements"""
     def __init__(self):
-        self.cur_user: str = ""
-        self.cur_container: set = set()
+        self.__cur_user: str = ""
+        self.__cur_container: set = set()
 
     """prints all commands"""
     @staticmethod
@@ -64,19 +64,19 @@ class Storage:
             match list_of_words[0]:
                 case 'add':
                     if self.check_input_many_arg(len_list_of_words, 'add'):
-                        print('add')
+                        self.add(list_of_words[1:])
 
                 case 'remove':
                     if self.check_input_one_arg(len_list_of_words, 'remove'):
-                        print('remove')
+                        self.remove(list_of_words[1])
 
                 case 'find':
                     if self.check_input_many_arg(len_list_of_words, 'find'):
-                        print('find')
+                        self.find(list_of_words[1:])
 
                 case 'list':
                     if self.check_input_non_arg(len_list_of_words, 'list'):
-                        print('list')
+                        self.list()
 
                 case 'grep':
                     if self.check_input_one_arg(len_list_of_words, 'grep'):
@@ -105,6 +105,38 @@ class Storage:
 
                 case _:
                     print('Error input. Try again')
+
+    def add(self, arguments: list):
+        for argument in arguments:
+            self.__cur_container.add(argument)
+
+    def remove(self, argument):
+        if argument in self.__cur_container:
+            self.__cur_container.remove(argument)
+        else:
+            print('Element not found')
+
+    def find(self, arguments):
+        flag = False
+        for argument in arguments:
+            if argument in self.__cur_container:
+                print(argument)
+                flag = True
+        if not flag:
+            print('No such elements')
+
+    def list(self):
+        if self.__cur_container:
+            print('Container contains:')
+            for arg in self.__cur_container:
+                print(arg)
+        else:
+            print('Container is empty')
+
+
+
+
+
 
 
 
