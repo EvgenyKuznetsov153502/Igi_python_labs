@@ -1,5 +1,5 @@
 from CLI_program import Storage
 
-n = Storage
-n.print_help()
+n = Storage()
+n.run()
 
