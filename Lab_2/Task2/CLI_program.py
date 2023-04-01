@@ -165,7 +165,7 @@ class Storage:
         self.switch(name)
 
     def save(self):
-        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/DataBase/{self.__cur_user}' + '.pickle'
+        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/Task2/DataBase/{self.__cur_user}' + '.pickle'
 
         try:
             with open(path, 'rb') as file:
@@ -177,7 +177,7 @@ class Storage:
             pickle.dump(temp_set, file)
 
     def load(self):
-        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/DataBase/{self.__cur_user}' + '.pickle'
+        path = fr'/home/eugene/Studing/Igi_python_labs/Lab_2/Task2/DataBase/{self.__cur_user}' + '.pickle'
 
         with open(path, 'rb') as file:
             self.__cur_container = self.__cur_container.union(pickle.load(file))
