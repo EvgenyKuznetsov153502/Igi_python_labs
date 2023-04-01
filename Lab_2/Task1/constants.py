@@ -1,7 +1,8 @@
-REG_EXPR_TO_CALC_SENT = r"[.!?]+"
+REG_EXPR_TO_CALC_SENT = r"\w+[\s\w;\-:\(\)\"\'\,]*[.?!]*"
 REG_EXPR_TO_CALC_NON_DEC_SENT = r"[!?]+"
 REG_EXPR_TO_WORD = r"\b[a-zA-Z\d]+\b"
-REG_EXPR_TO_NUM = r'\b\d+\b'
+REG_EXPR_TO_NUM = r'\b[\d+.]\b'
+
 
 WORDS_CONTAIN_ONE_CHAR = [
     ' etc.', ' vs.', ' jr.', ' sr.', ' mr.', ' mrs.', ' smb.', ' smth.', ' adj.', ' pp.', ' par.', ' ex.',
