@@ -20,3 +20,25 @@ class DictSerializer:
     CLASS_KW = "__class__"
 
     OBJECT_KW = "object"
+
+    @classmethod
+    def to_dict(cls, obj, is_inner_func=False):
+        if type(obj) in (int, float, bool, str, nonetype):
+            return obj
+
+        if type(obj) is list:
+            return [cls.to_dict(o) for o in obj]
+
+        if type(obj) is dict:
+            return {cls.TYPE_KW: dict.__name__,
+                    cls.SOURCE_KW: [[cls.to_dict(item[0]), cls.to_dict(item[1])] for item in obj.items()]}
+
+        if type(obj) in (set, frozenset, tuple, bytes, bytearray):
+            return {cls.TYPE_KW: type(obj).__name__,
+                    cls.SOURCE_KW: cls.to_dict([*obj])}
+
+        if type(obj) is complex:
+            return {cls.TYPE_KW: complex.__name__,
+                    cls.SOURCE_KW: {complex.real.__name__: obj.real,
+                                    complex.imag.__name__: obj.imag}}
+
