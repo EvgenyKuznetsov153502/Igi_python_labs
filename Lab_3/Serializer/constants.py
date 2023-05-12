@@ -43,3 +43,10 @@ CODE_PROPS = [prop.__name__ for prop in [
     codetype.co_cellvars]
 ]
 
+UNIQUE_TYPES = [
+    mapproxytype,
+    wrapdesctype,
+    metdesctype,
+    getsetdesctype,
+    bldinfunctype
+]
