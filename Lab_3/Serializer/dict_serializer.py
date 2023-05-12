@@ -42,3 +42,78 @@ class DictSerializer:
                     cls.SOURCE_KW: {complex.real.__name__: obj.real,
                                     complex.imag.__name__: obj.imag}}
 
+        if type(obj) is moduletype:
+            return {cls.TYPE_KW: moduletype.__name__,
+                    cls.SOURCE_KW: obj.__name__}
+
+        if type(obj) is codetype:
+            code = {cls.TYPE_KW: codetype.__name__}
+            source = {}
+
+            for (key, value) in inspect.getmembers(obj):
+                if key in CODE_PROPS:
+                    source[key] = cls.to_dict(value)
+
+            code.update({cls.SOURCE_KW: source})
+            return code
+
+        if type(obj) is celltype:
+            return {cls.TYPE_KW: celltype.__name__,
+                    cls.SOURCE_KW: cls.to_dict(obj.cell_contents)}
+
+        if type(obj) in (smethodtype, cmethodtype):
+            return {cls.TYPE_KW: type(obj).__name__,
+                    cls.SOURCE_KW: cls.to_dict(obj.__func__, is_inner_func)}
+
+        if inspect.isroutine(obj):
+            source = {}
+
+            # Code
+            source[cls.CODE_KW] = cls.to_dict(obj.__code__)
+
+            # Global vars
+            gvars = cls.__get_gvars(obj, is_inner_func)
+            source[cls.GLOBALS_KW] = cls.to_dict(gvars)
+
+            # Name
+            source[cls.NAME_KW] = cls.to_dict(obj.__name__)
+
+            # Defaults
+            source[cls.DEFAULTS_KW] = cls.to_dict(obj.__defaults__)
+
+            #Closure
+            source[cls.CLOSURE_KW] = cls.to_dict(obj.__closure__)
+
+            return {cls.TYPE_KW: functype.__name__,
+                    cls.SOURCE_KW: source}
+
+        elif inspect.isclass(obj):
+            source = {}
+
+            # Name
+            source[cls.NAME_KW] = cls.to_dict(obj.__name__)
+
+            # Bases
+            source[cls.BASES_KW] = cls.to_dict(tuple(b for b in obj.__bases__ if b != object))
+
+            # Dict
+            source[cls.DICT_KW] = cls.__get_obj_dict(obj)
+
+            return {cls.TYPE_KW: type.__name__,
+                    cls.SOURCE_KW: source}
+
+        else:
+            source = {}
+
+            # Class
+            source[cls.CLASS_KW] = cls.to_dict(obj.__class__)
+
+            # Dict
+            source[cls.DICT_KW] = cls.__get_obj_dict(obj)
+
+            return {cls.TYPE_KW: cls.OBJECT_KW,
+                    cls.SOURCE_KW: source}
+
+
+
+
