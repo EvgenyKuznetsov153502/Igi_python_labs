@@ -1,5 +1,5 @@
 import inspect
-from Serializer import nonetype, moduletype, codetype, celltype, functype, bldinfunctype, smethodtype, \
+from constants import nonetype, moduletype, codetype, celltype, functype, bldinfunctype, smethodtype, \
     cmethodtype, mapproxytype, wrapdesctype, metdesctype, getsetdesctype, \
     CODE_PROPS, UNIQUE_TYPES
 
@@ -113,6 +113,59 @@ class DictSerializer:
 
             return {cls.TYPE_KW: cls.OBJECT_KW,
                     cls.SOURCE_KW: source}
+
+
+    @classmethod
+    def __get_gvars(cls, func, is_inner_func):
+        name = func.__name__
+        gvars = {}
+
+        for gvar_name in func.__code__.co_name:
+            # Separating the variables that the function needs
+            if gvar_name in func.__globals__:
+                # Module
+                if type(func.__globals__[gvar_name]) is moduletype:
+                    gvars[gvar_name] = func.__globals__[gvar_name]
+
+                # Class
+                elif inspect.isclass(func.__globals__[gvar_name]):
+                    # To prevent recursion, the class in which this method is declared is replaced with the
+                    # name of the class. In the future, this name will be replaced by the class type
+                    c = func.__globals__[gvar_name]
+                    if is_inner_func and name in c.__dict__ and func == c.__dict__[name].__func__:
+                        gvars[gvar_name] = c.__name__
+                    else:
+                        gvars[gvar_name] = c
+                # Recursion protection
+                elif gvar_name == func.__code__.co_name:
+                    gvars[gvar_name] = func.__name__
+
+                else:
+                    gvars[gvar_name] = func.__globals__[gvar_name]
+
+        return gvars
+
+    @classmethod
+    def __get_obj_dict(cls, obj):
+        dct = {item[0]: item[1] for item in obj.__dict__.items()}
+        dct2 = {}
+
+        for key, value in dct.items():
+            if type(value) not in UNIQUE_TYPES:
+                if inspect.isroutine(value):
+                    # Recursion protection
+                    dct2[cls.to_dict(key)] = cls.to_dict(value, is_inner_func=True)
+                else:
+                    dct2[cls.to_dict(key)] = cls.to_dict(value)
+
+        return dct2
+
+
+
+
+
+
+
 
 
 

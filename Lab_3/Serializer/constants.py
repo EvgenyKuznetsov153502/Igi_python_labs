@@ -1,7 +1,7 @@
 from types import NoneType as nonetype, \
     CodeType as codetype, \
     ModuleType as moduletype, \
-    FunctionType as functtype, \
+    FunctionType as functype, \
     BuiltinFunctionType as bldinfunctype, \
     CellType as celltype, \
     MappingProxyType as mapproxytype, \
