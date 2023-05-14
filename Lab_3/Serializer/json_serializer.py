@@ -8,7 +8,7 @@ from constants import nonetype
 
 class JsonSerializer(BaseSerializer):
 
-    NF_LITERAL = str(1E1000)
+    INF_LITERAL = str(1E1000)
     NAN_LITERAL = str(1E1000 / 1E1000)
 
     TRUE_LITERAL = "true"
@@ -62,7 +62,7 @@ class JsonSerializer(BaseSerializer):
         return DictSerializer.from_dict(obj)
 
     def __loads_to_dict(self, string: str):
-        string = string.strip()
+        string = string.strip() # удаляет начальные и конечные пробелы
 
         # Int
         match = re.fullmatch(self.INT_PATTERN, string)

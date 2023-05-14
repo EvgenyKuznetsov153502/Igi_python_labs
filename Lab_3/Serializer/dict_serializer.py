@@ -50,14 +50,14 @@ class DictSerializer:
             code = {cls.TYPE_KW: codetype.__name__}
             source = {}
 
-            for (key, value) in inspect.getmembers(obj):
+            for (key, value) in inspect.getmembers(obj): # достает в виде списка кортежей все аттрибуты(имя аттрибута и его значение)
                 if key in CODE_PROPS:
                     source[key] = cls.to_dict(value)
 
             code.update({cls.SOURCE_KW: source})
             return code
 
-        if type(obj) is celltype:
+        if type(obj) is celltype: # Sell type сохраняются значения переменных замыкания (вышли из области видимости)
             return {cls.TYPE_KW: celltype.__name__,
                     cls.SOURCE_KW: cls.to_dict(obj.cell_contents)}
 
@@ -65,10 +65,10 @@ class DictSerializer:
             return {cls.TYPE_KW: type(obj).__name__,
                     cls.SOURCE_KW: cls.to_dict(obj.__func__, is_inner_func)}
 
-        if inspect.isroutine(obj):
+        if inspect.isroutine(obj): # Проверяет, является ли объект функцией или методом.
             source = {}
 
-            # Code
+            # Code cкомпилированный код
             source[cls.CODE_KW] = cls.to_dict(obj.__code__)
 
             # Global vars
@@ -79,10 +79,10 @@ class DictSerializer:
             source[cls.NAME_KW] = cls.to_dict(obj.__name__)
 
             # Defaults
-            source[cls.DEFAULTS_KW] = cls.to_dict(obj.__defaults__)
+            source[cls.DEFAULTS_KW] = cls.to_dict(obj.__defaults__) #кортеж значений по умолчанию аргументов функции
 
             #Closure
-            source[cls.CLOSURE_KW] = cls.to_dict(obj.__closure__)
+            source[cls.CLOSURE_KW] = cls.to_dict(obj.__closure__) # кортеж переменных из внешней области видимости, используемые в замыкании
 
             return {cls.TYPE_KW: functype.__name__,
                     cls.SOURCE_KW: source}
@@ -93,7 +93,7 @@ class DictSerializer:
             # Name
             source[cls.NAME_KW] = cls.to_dict(obj.__name__)
 
-            # Bases
+            # Bases кортеж базовых классов (которых класс наследуется)
             source[cls.BASES_KW] = cls.to_dict(tuple(b for b in obj.__bases__ if b != object))
 
             # Dict
@@ -119,7 +119,7 @@ class DictSerializer:
         name = func.__name__
         gvars = {}
 
-        for gvar_name in func.__code__.co_name:
+        for gvar_name in func.__code__.co_name: # func.code.co_names: # кортеж имен всех переменных
             # Separating the variables that the function needs
             if gvar_name in func.__globals__:
                 # Module
@@ -130,7 +130,7 @@ class DictSerializer:
                 elif inspect.isclass(func.__globals__[gvar_name]):
                     # To prevent recursion, the class in which this method is declared is replaced with the
                     # name of the class. In the future, this name will be replaced by the class type
-                    c = func.__globals__[gvar_name]
+                    c = func.__globals__[gvar_name]  #значение глобальной переменной
                     if is_inner_func and name in c.__dict__ and func == c.__dict__[name].__func__:
                         gvars[gvar_name] = c.__name__
                     else:
@@ -212,7 +212,7 @@ class DictSerializer:
 
                 # If there are suitable global variables, they are replaced.
                 for key in gvars:
-                    if key in code.co_name and key in globals():
+                    if key in code.co_name and key in globals(): #Возвращает словарь, содержащий глобальные переменные текущей области
                         gvars[key] = globals()[key]
 
                 func = functype(code, gvars, name, defaults, closure)
