@@ -90,7 +90,7 @@ class XmlSerializer(BaseSerializer):
         if key == dict.__name__:
             matches = regex.findall(self.XML_ELEMENT_PATTERN, value)
             return {self.__loads_to_dict(matches[i][0]):
-                        self.__loads_to_dict(matches[i + 1][0]) for i in range(0, len(matches), 2)}
+                    self.__loads_to_dict(matches[i + 1][0]) for i in range(0, len(matches), 2)}
         else:
             raise ValueError
 
