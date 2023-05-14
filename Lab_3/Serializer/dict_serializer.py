@@ -1,5 +1,6 @@
 import inspect
-from constants import nonetype, moduletype, codetype, celltype, functype, bldinfunctype, smethodtype, \
+
+from Lab_3.Serializer.constants import nonetype, moduletype, codetype, celltype, functype, bldinfunctype, smethodtype, \
     cmethodtype, mapproxytype, wrapdesctype, metdesctype, getsetdesctype, \
     CODE_PROPS, UNIQUE_TYPES
 

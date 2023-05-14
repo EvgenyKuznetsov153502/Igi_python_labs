@@ -1,10 +1,10 @@
 import re
 
 import regex
-from base_serializer import BaseSerializer
-from dict_serializer import DictSerializer
+from Lab_3.Serializer.base_serializer import BaseSerializer
+from Lab_3.Serializer.dict_serializer import DictSerializer
 
-from constants import nonetype
+from Lab_3.Serializer.constants import nonetype
 
 
 class XmlSerializer(BaseSerializer):
