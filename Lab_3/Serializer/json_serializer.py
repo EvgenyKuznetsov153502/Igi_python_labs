@@ -24,7 +24,6 @@ class JsonSerializer(BaseSerializer):
 
     ELEMENTARY_TYPES_PATTERN = fr"{FLOAT_PATTERN}|{INT_PATTERN}|{BOOL_PATTERN}|{STRING_PATTERN}|{NULL_PATTERN}"
 
-    # This regex use recursive statements to be able to capture nested lists and objects.
     ARRAY_PATTERN = r"\[(?R)?(?:,(?R))*\]"
     OBJECT_PATTERN = r"\{(?:(?R):(?R))?(?:,(?R):(?R))*\}"
 
@@ -62,7 +61,7 @@ class JsonSerializer(BaseSerializer):
         return DictSerializer.from_dict(obj)
 
     def __loads_to_dict(self, string: str):
-        string = string.strip() # удаляет начальные и конечные пробелы
+        string = string.strip()
 
         # Int
         match = re.fullmatch(self.INT_PATTERN, string)
@@ -102,8 +101,8 @@ class JsonSerializer(BaseSerializer):
             string = string[1:-1]
             matches = regex.findall(self.VALUE_PATTERN, string)
 
-            # Variable matches will store key-value pairs in one row. Elements with
-            # even indexes are keys, those with odd indexes are values.
+            # Совпадения переменных будут хранить пары ключ-значение в одной строке. Элементы с
+            # четные индексы являются ключами, а нечетные - значениями.
             return {self.__loads_to_dict(matches[i][0]):
                     self.__loads_to_dict(matches[i + 1][0]) for i in range(0, len(matches), 2)}
 

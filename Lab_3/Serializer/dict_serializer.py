@@ -69,20 +69,20 @@ class DictSerializer:
         if inspect.isroutine(obj): # Проверяет, является ли объект функцией или методом.
             source = {}
 
-            # Code cкомпилированный код
+            # Код cкомпилированный код
             source[cls.CODE_KW] = cls.to_dict(obj.__code__)
 
-            # Global vars
+            # Глоб переменные
             gvars = cls.__get_gvars(obj, is_inner_func)
             source[cls.GLOBALS_KW] = cls.to_dict(gvars)
 
-            # Name
+            # Имя
             source[cls.NAME_KW] = cls.to_dict(obj.__name__)
 
-            # Defaults
-            source[cls.DEFAULTS_KW] = cls.to_dict(obj.__defaults__) #кортеж значений по умолчанию аргументов функции
+            # Переменные по умолчанию
+            source[cls.DEFAULTS_KW] = cls.to_dict(obj.__defaults__) # кортеж значений по умолчанию аргументов функции
 
-            #Closure
+            # Замыкания
             source[cls.CLOSURE_KW] = cls.to_dict(obj.__closure__) # кортеж переменных из внешней области видимости, используемые в замыкании
 
             return {cls.TYPE_KW: functype.__name__,
@@ -91,13 +91,13 @@ class DictSerializer:
         elif inspect.isclass(obj):
             source = {}
 
-            # Name
+            # Имя
             source[cls.NAME_KW] = cls.to_dict(obj.__name__)
 
-            # Bases кортеж базовых классов (которых класс наследуется)
+            # Кортеж базовых классов (которых класс наследуется)
             source[cls.BASES_KW] = cls.to_dict(tuple(b for b in obj.__bases__ if b != object))
 
-            # Dict
+            # Словарь
             source[cls.DICT_KW] = cls.__get_obj_dict(obj)
 
             return {cls.TYPE_KW: type.__name__,
@@ -106,10 +106,10 @@ class DictSerializer:
         else:
             source = {}
 
-            # Class
+            # Класс
             source[cls.CLASS_KW] = cls.to_dict(obj.__class__)
 
-            # Dict
+            # Словарь
             source[cls.DICT_KW] = cls.__get_obj_dict(obj)
 
             return {cls.TYPE_KW: cls.OBJECT_KW,
@@ -120,14 +120,14 @@ class DictSerializer:
         name = func.__name__
         gvars = {}
 
-        for gvar_name in func.__code__.co_name: # func.code.co_names: # кортеж имен всех переменных
-            # Separating the variables that the function needs
+        for gvar_name in func.__code__.co_name: # кортеж имен всех переменных
+            # Разделение переменных которая функция  использует
             if gvar_name in func.__globals__:
-                # Module
+                # Модуль
                 if type(func.__globals__[gvar_name]) is moduletype:
                     gvars[gvar_name] = func.__globals__[gvar_name]
 
-                # Class
+                # Класс
                 elif inspect.isclass(func.__globals__[gvar_name]):
                     # To prevent recursion, the class in which this method is declared is replaced with the
                     # name of the class. In the future, this name will be replaced by the class type
@@ -136,7 +136,7 @@ class DictSerializer:
                         gvars[gvar_name] = c.__name__
                     else:
                         gvars[gvar_name] = c
-                # Recursion protection
+                # Защита рекурсии
                 elif gvar_name == func.__code__.co_name:
                     gvars[gvar_name] = func.__name__
 
@@ -179,8 +179,6 @@ class DictSerializer:
             if obj_type == dict.__name__:
                 return cls.from_dict(obj_source, is_dict=True)
 
-            # Key - type name, value - type itself. Calling by type name returns that type.
-            # This is necessary for the same creation of simple collections.
             cols_dict = {t.__name__: t for t in [set, frozenset, tuple, bytes, bytearray]}
             if obj_type in cols_dict:
                 return cols_dict[obj_type](cls.from_dict(obj_source))
@@ -211,7 +209,7 @@ class DictSerializer:
                 defaults = cls.from_dict(obj_source[cls.DEFAULTS_KW])
                 closure = cls.from_dict(obj_source[cls.CLOSURE_KW])
 
-                # If there are suitable global variables, they are replaced.
+                # Если есть подходящие глобальные переменные, то они заменяются.
                 for key in gvars:
                     if key in code.co_name and key in globals(): #Возвращает словарь, содержащий глобальные переменные текущей области
                         gvars[key] = globals()[key]
@@ -232,7 +230,7 @@ class DictSerializer:
 
                 cl = type(name, bases, dct)
 
-                # Restore a reference to the current class in the nested method __globals__
+                # Восстановить ссылку на текущий класс во вложенном методе __globals__
                 for attr in cl.__dict__.values():
                     if inspect.isroutine(attr):
                         if type(attr) in (smethodtype, classmethod):
