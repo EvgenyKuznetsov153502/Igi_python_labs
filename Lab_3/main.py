@@ -1,22 +1,78 @@
-from Serializer import JsonSerializer, XmlSerializer, SerializersFactory, SerializerType
+# import serializers
+# from serializers import JsonSerializer, XmlSerializer, SerializersFactory, SerializerType
 
 
-class MyClass:
-    a = 10
+import math
+from serializer.src import factory
+
+
+def my_decor(meth):
+    def inner(*args, **kwargs):
+        print('I am in my_decor')
+        return meth(*args, **kwargs)
+
+    return inner
+
+
+class A:
+    x = 10
+
+    @my_decor
+    def my_sin(self, c):
+        return math.sin(c * self.x)
 
     @staticmethod
-    def info(x):
-        return x*x
+    def stat():
+        return 145
+
+    def __str__(self):
+        return 'AAAAA'
+
+    def __repr__(self):
+        return 'AAAAA'
 
 
-if __name__ == '__main__':
+class B:
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
 
-    s = SerializersFactory.create_serializer(SerializerType.JSON)
-    a = s.dumps(MyClass)
-    l = s.loads(a)
-    obj = l
-    print(obj.info(2))
+    @property
+    def prop(self):
+        return self.a * self.b
+
+    @classmethod
+    def class_meth(cls):
+        return math.pi
+
+
+class C(A, B):
+    pass
+
+
+# ser = factory.create_serializer('json')
+ser = factory.Factory.create_serializer(factory.JSON_DATA_TYPE)
+
+# var = 15
+# var_ser = ser.dumps(var)
+# var_des = ser.loads(var_ser)
+# print(var_des)
+
+C_ser = ser.dumps(C)
+C_des = ser.loads(C_ser)
+
+c = C(1, 2)
+c_ser = ser.dumps(c)
+c_des = ser.loads(c_ser)
+
+print(c_des)
+print(c_des.x)
+print(c_des.my_sin(10))
+print(c_des.prop)
+print(C_des.stat())
+print(c_des.class_meth())
 
 
 
-
+# f = C(1, 2)
+# print(f.my_sin(11))
