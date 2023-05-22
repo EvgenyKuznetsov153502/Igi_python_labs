@@ -1,9 +1,9 @@
-# import serializers
-# from serializers import JsonSerializer, XmlSerializer, SerializersFactory, SerializerType
-
-
+import inspect
 import math
+from types import FunctionType, MethodType
+import base64
 from serializer.src import factory
+import serializer.src
 
 
 def my_decor(meth):
@@ -51,7 +51,7 @@ class C(A, B):
 
 
 # ser = factory.create_serializer('json')
-ser = factory.Factory.create_serializer(factory.JSON_DATA_TYPE)
+ser = factory.Factory.create_serializer(factory.XML_DATA_TYPE)
 
 # var = 15
 # var_ser = ser.dumps(var)
@@ -73,6 +73,17 @@ print(C_des.stat())
 print(c_des.class_meth())
 
 
+print(inspect.getmodule(A.my_sin))
+# print(base64.b64encode(b'SGVsbG8sIFdvcmxkIQ==').decode("ascii"))
 
-# f = C(1, 2)
+
+
+
+
+
+
+
+
+
+
 # print(f.my_sin(11))

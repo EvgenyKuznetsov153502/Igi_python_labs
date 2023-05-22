@@ -2,7 +2,7 @@ import inspect
 
 
 def get_fathers_class_for_method(method):
-    cls = getattr(
+    cls = getattr( # возращает значение аттрибута по имени трибута (получаем имя класса)
         inspect.getmodule(method),
         method.__qualname__.split('.<locals>', 1)[0].rsplit('.', 1)[0],
         None

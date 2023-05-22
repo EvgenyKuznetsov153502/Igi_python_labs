@@ -122,7 +122,7 @@ class Converter:
             if not (isinstance(value, dict) and cls._get_type(value) == FUNCTION_TYPE)
         }
 
-        decoded_class = type(data['__name__'], class_bases, class_dict)
+        decoded_class = type(data['__name__'], class_bases, class_dict) # создаем класс
 
         for key, value in data.items():
             if isinstance(value, dict) and cls._get_type(value) == FUNCTION_TYPE:
@@ -161,12 +161,12 @@ class Converter:
 
     @classmethod
     def _encode_cell(cls, obj):
-        data = cls.convert(obj.cell_contents)
+        data = cls.convert(obj.cell_contents) # получаем содержимое переменных из внешней области видимости(замыкания)
         return cls._create_dict(data, CELL_TYPE)
 
     @classmethod
     def _encode_code(cls, obj):
-        attrs = [attr for attr in dir(obj) if attr.startswith('co')]
+        attrs = [attr for attr in dir(obj) if attr.startswith('co')] # dir возращает лист из аттрибутов obj
 
         code_dict = {
             attr: cls.convert(getattr(obj, attr))
@@ -184,8 +184,8 @@ class Converter:
     @classmethod
     def _encode_class(cls, obj):
         data = {
-            attr: cls.convert(getattr(obj, attr))
-            for attr, value in inspect.getmembers(obj)
+            attr: cls.convert(getattr(obj, attr))  # достает значение аттрибутов по имени
+            for attr, value in inspect.getmembers(obj) # достает все аттрибуты класса
             if attr not in UNSERIALIZABLE_DUNDER
             and type(value) not in UNSERIALIZABLE_TYPES
         }
@@ -228,9 +228,9 @@ class Converter:
         func_globs = {
             key: cls.convert(value)
             for key, value in obj.__globals__.items()
-            if key in obj.__code__.co_names
+            if key in obj.__code__.co_names # список имен, используемых в коде функции
             and value is not func_class
-            and key != obj.__code__.co_name
+            and key != obj.__code__.co_name # имя функции
         }
 
         encoded_func = cls.convert(
@@ -252,7 +252,7 @@ class Converter:
 
     @classmethod
     def _encode_bytes(cls, obj: bytes):
-        data = base64.b64encode(obj).decode("ascii")
+        data = base64.b64encode(obj).decode("ascii") # преобразование байтов в строку
         return cls._create_dict(data, BYTES_TYPE)
 
     @classmethod
@@ -263,7 +263,7 @@ class Converter:
     def is_iterable(obj):
         return hasattr(obj, '__iter__') \
             and hasattr(obj, '__next__') \
-            and callable(obj.__iter__)
+            and callable(obj.__iter__) # можно ли вызвать
 
     @staticmethod
     def _get_type(obj):
@@ -282,3 +282,4 @@ class Converter:
     @staticmethod
     def _create_dict(data, _type, **additional):
         return dict(__type=_type, data=data, **additional)
+
