@@ -2,8 +2,25 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, Http404
 
 
-def home(request):  # HttpRequest
-    return HttpResponse("Страница приложения  AutoCar.")
+# menu = ['Главная страница', 'Войти']
+menu = [
+    {'title': "Главная страница", 'url_name': 'home'},
+    {'title': "Войти", 'url_name': 'login'},
+]
+
+
+def home(request):
+
+    context = {
+        'title': 'Главная страница',
+        'menu': menu
+    }
+
+    return render(request, 'MyApp/home.html', context=context)
+
+
+def login(request):
+    return render(request, 'MyApp/login.html', {'title': 'Авторизация', 'menu': menu} )
 
 
 def cars(request, carid):
