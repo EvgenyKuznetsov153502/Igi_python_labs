@@ -3,16 +3,21 @@ from .models import *
 
 
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'telephone', 'date_of_birth')
+    list_display = ('id', 'name', 'telephone', 'date_of_birth', 'display_cars')
     # list_display = ('id', 'name')
     search_fields = ('name', 'telephone')
 
 
+class PaymentInvoicesInline(admin.TabularInline):
+    model = PaymentInvoice
+
+
 class CarAdmin(admin.ModelAdmin):
-    list_display = ('id', 'number', 'brand', 'debt')
+    list_display = ('id', 'number', 'brand', 'debt', 'display_client')
     # list_display = ('id', 'brand')
     search_fields = ('number', 'brand')
     list_filter = ('brand',)
+    inlines = [PaymentInvoicesInline]
 
 
 class ParkingSpaceAdmin(admin.ModelAdmin):

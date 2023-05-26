@@ -1,0 +1,19 @@
+{% extends 'MyApp/base.html' %}
+
+{% block content %}
+{% if my_car.count %}
+      {% for c in my_car %}
+      <div class="client-info">
+
+    <h2>{{title}}</h2>
+    <p><strong>Номер автомобиля: </strong> {{c.number}}</p>
+    <p><strong>Марка:</strong> {{c.brand}}</p>
+    <p><strong>Долг:</strong> {{c.debt}}</p>
+    <p><strong>Владельцы:</strong> {{c.display_client}}</p>
+
+      </div>
+      {% endfor %}
+    {% else %}
+      <p>Нету авто с таким id </p>
+    {% endif %}
+{% endblock %}

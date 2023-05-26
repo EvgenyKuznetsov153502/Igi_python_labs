@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class PaymentInvoice(models.Model):
@@ -19,7 +20,7 @@ class PaymentInvoice(models.Model):
 
 
 class ParkingSpace(models.Model):
-    number = models.IntegerField()
+    number = models.IntegerField()  # номер парковочного места
     price = models.IntegerField()
     is_occupied = models.BooleanField(default=False)
     car = models.OneToOneField('Car', on_delete=models.SET_NULL, null=True, related_name='parking_space')
@@ -43,6 +44,14 @@ class Car(models.Model):
     def __str__(self):
         return self.number
 
+    def get_absolute_url(self):
+        return reverse('car', kwargs={'car_id': self.pk})
+
+    def display_client(self):
+        return ', '.join([client.name for client in self.clients.all()[:3]])
+
+    display_client.short_description = 'Clients'
+
     class Meta:
         verbose_name = 'Автомобиль'
         verbose_name_plural = 'Автомобили'
@@ -57,6 +66,14 @@ class Client(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('client', kwargs={'client_id': self.pk})
+
+    def display_cars(self):
+        return ', '.join([car.number for car in self.cars.all()[:3]])
+
+    display_cars.short_description = 'Cars'
 
     class Meta:
         verbose_name = 'Клиент'
