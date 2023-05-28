@@ -1,0 +1,21 @@
+{% extends 'MyApp/base.html' %}
+
+{% block content %}
+{% if space.count %}
+      {% for c in space %}
+      <div class="client-info">
+
+    <h2>{{title}}</h2>
+    <p><strong>Номер:</strong> {{c.number}}</p>
+    <p><strong>Цена:</strong> {{c.price}}</p>
+          {% if c.is_occupied %}
+          <p><strong>Занято машиной:</strong> {{c.car}}</p>
+          {% else %}
+          <p><strong>Свободно</strong></p>
+          {% endif %}
+      </div>
+      {% endfor %}
+    {% else %}
+      <p>Нету парковочного места с таким id</p>
+    {% endif %}
+{% endblock %}
