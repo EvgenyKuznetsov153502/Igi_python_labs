@@ -23,7 +23,7 @@ class ParkingSpace(models.Model):
     number = models.IntegerField(unique=True)  # номер парковочного места
     price = models.IntegerField()
     is_occupied = models.BooleanField(default=False)
-    car = models.OneToOneField('Car', on_delete=models.SET_NULL, null=True, related_name='parking_space')
+    car = models.OneToOneField('Car', on_delete=models.SET_NULL, blank=True, null=True, related_name='parking_space')
 
     def __str__(self):
         return str(self.number)

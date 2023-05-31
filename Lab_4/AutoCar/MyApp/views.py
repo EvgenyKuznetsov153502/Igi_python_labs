@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, Http404
+
+from .forms import *
 from .models import Client, Car, ParkingSpace
 
 # menu = ['Главная страница', 'Войти']
@@ -91,20 +93,56 @@ def parking_spaces(request):
 
 def show_park_space(request, sp_id):
     space = ParkingSpace.objects.filter(id=sp_id)
+    # form = UpdatePrice()
+    if request.method == 'POST':
+        form = UpdatePrice(request.POST)
+        if form.is_valid():
+            try:
+                price = form.cleaned_data['price']
+                sp = ParkingSpace.objects.get(id=sp_id)
+                sp.price = price
+                sp.save()
+                return redirect('parking_space', sp_id)
+            except:
+                form.add_error(None, 'Ошибка изменения цены')
+    else:
+        form = UpdatePrice()
+
     context = {
         'title': 'Информация о парковочном месте',
         'menu': menu,
-        'space': space
+        'space': space,
+        'form': form,
+        'id': sp_id
     }
     return render(request, 'MyApp/park_space_info.html', context=context)
 
 
 def add_parking_space(request):
+    # form = AddParkSpace()
+    if request.method == "POST":
+        form = AddParkSpace(request.POST)
+        if form.is_valid():
+            # print(form.cleaned_data)
+            form.save()
+            return redirect('parking_spaces')
+    else:
+        form = AddParkSpace()
     context = {
         'title': 'Добавление парковочного места',
-        'menu': menu
+        'menu': menu,
+        'form': form
     }
     return render(request, 'MyApp/add_parking_space.html', context=context)
+
+
+def delete_park_space(request, sp_id):
+    try:
+        sp = ParkingSpace.objects.get(id=sp_id)
+        sp.delete()
+        return redirect('parking_spaces')
+    except:
+        return HttpResponseNotFound("<h2>Ошибка удаления</h2>")
 
 
 def login(request):

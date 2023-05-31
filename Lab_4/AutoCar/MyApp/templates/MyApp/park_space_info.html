@@ -15,7 +15,18 @@
           {% endif %}
       </div>
       {% endfor %}
+
+    <h2>Изменить цену:</h2>
+    <form action="{% url 'parking_space' id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Изменить</button>
+    </form>
+    <h2></h2>
+    <a href="{% url 'delete_park_space' id %}"><button>Удалить парковочное место</button></a>
+
     {% else %}
       <p>Нету парковочного места с таким id</p>
     {% endif %}
+
 {% endblock %}

@@ -16,7 +16,5 @@
     {% else %}
       <p>Нету ни одного парковочного места</p>
     {% endif %}
-    <form action="{% url 'add_parking_space' %}" target="_blank">
-   <button >Добавить</button>
-    </form>
+       <a href="{% url 'add_parking_space' %}"><button>Добавить</button></a>
 {% endblock %}
