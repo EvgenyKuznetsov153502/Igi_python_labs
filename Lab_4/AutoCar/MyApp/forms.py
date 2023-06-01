@@ -40,3 +40,15 @@ class UpdatePrice(forms.Form):
         if price < 0:
             raise ValidationError('Цена должна быть положительной')
         return price
+
+
+class PayForm(forms.Form):
+    enrollment = forms.IntegerField(label='Сумма')
+
+    def clean_enrollment(self):
+        enrollment = self.cleaned_data['enrollment']
+        if enrollment < 0:
+            raise ValidationError('Зачисление должно быть положительное')
+        return enrollment
+
+

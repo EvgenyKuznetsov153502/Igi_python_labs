@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, Http404
 
@@ -73,10 +74,35 @@ def cars(request):
 
 def show_car(request, car_id):
     car = Car.objects.filter(id=car_id)
+    try:
+        car2 = Car.objects.get(id=car_id)
+        spaces = car2.invoices.all()
+    except:
+        return HttpResponseNotFound("<h2>Нету машины с таким id</h2>")
+
+    if request.method == 'POST':
+        form = PayForm(request.POST)
+        if form.is_valid():
+            try:
+                money = form.cleaned_data['enrollment']
+                car2.debt -= money
+                car2.save()
+                last_inv = spaces.last()
+                last_inv.enrollment += money
+                last_inv.save()
+                return redirect('car', car_id)
+            except:
+                form.add_error(None, 'Ошибка оплаты')
+    else:
+        form = PayForm()
+
     context = {
-        'title': 'Информация о автомобили',
+        'title': 'Информация об автомобиле',
         'menu': menu,
-        'my_car': car
+        'my_car': car,
+        'spaces': spaces,
+        'id': car_id,
+        'form': form
     }
     return render(request, 'MyApp/car_info.html', context=context)
 
@@ -93,7 +119,7 @@ def parking_spaces(request):
 
 def show_park_space(request, sp_id):
     space = ParkingSpace.objects.filter(id=sp_id)
-    # form = UpdatePrice()
+
     if request.method == 'POST':
         form = UpdatePrice(request.POST)
         if form.is_valid():
