@@ -1,7 +1,7 @@
-from django.db.models import F
+from django.db.models import F, Sum, Min
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, Http404
-
+from datetime import date
 from .forms import *
 from .models import Client, Car, ParkingSpace
 
@@ -11,7 +11,8 @@ menu = [
     {'title': "Войти", 'url_name': 'login'},
     {'title': "Клиенты", 'url_name': 'clients'},
     {'title': "Авто", 'url_name': 'cars'},
-    {'title': "Парковочные места", 'url_name': 'parking_spaces'}
+    {'title': "Парковочные места", 'url_name': 'parking_spaces'},
+    {'title': "Долги", 'url_name': 'debts'}
 ]
 
 
@@ -74,9 +75,19 @@ def cars(request):
 
 def show_car(request, car_id):
     car = Car.objects.filter(id=car_id)
+
     try:
         car2 = Car.objects.get(id=car_id)
         spaces = car2.invoices.all()
+
+        try:
+            sp = car2.parking_space
+            message = sp
+        except:
+            message = 'Нету'
+
+        #print(message)
+
     except:
         return HttpResponseNotFound("<h2>Нету машины с таким id</h2>")
 
@@ -102,7 +113,8 @@ def show_car(request, car_id):
         'my_car': car,
         'spaces': spaces,
         'id': car_id,
-        'form': form
+        'form': form,
+        'message': message
     }
     return render(request, 'MyApp/car_info.html', context=context)
 
@@ -169,6 +181,55 @@ def delete_park_space(request, sp_id):
         return redirect('parking_spaces')
     except:
         return HttpResponseNotFound("<h2>Ошибка удаления</h2>")
+
+
+def max_debt(request):
+    try:
+        list_of_clients_and_debts = []  # лист из листов вида [клиент, долг]
+
+        cl = Client.objects.filter(cars__isnull=False).distinct()
+        first_client = cl.first()
+        id_max = first_client.pk
+        temp = first_client.cars.aggregate(Sum('debt'))
+        max_deb = temp['debt__sum']
+
+        for client in cl:
+            dict_sum = client.cars.aggregate(Sum('debt'))
+            deb = dict_sum['debt__sum']
+            temp_list = [client.name, deb]
+            list_of_clients_and_debts.append(temp_list)
+            if deb > max_deb:
+                max_deb = deb
+                id_max = client.pk
+        max_debt_client = Client.objects.get(id=id_max)
+
+        last_date = date(2000, 6, 1)
+        for d in max_debt_client.cars.all():
+            if d.invoices.all():
+                temp_date = d.invoices.all().latest('payment_date').payment_date
+                # print(temp_date)
+                if temp_date > last_date:
+                    last_date = temp_date
+
+        # print(list_of_clients_and_debts)
+        temp_dict_debt = Car.objects.aggregate(Min('debt'))
+        min_debt = temp_dict_debt['debt__min']
+        car_min = Car.objects.get(debt=min_debt)
+
+    except:
+        return HttpResponseNotFound("Ошибка чтения")
+
+    context = {
+        'title': 'Долги по клиентам',
+        'menu': menu,
+        'max_debt': max_deb,
+        'max_debt_client': max_debt_client,
+        'last_date': last_date,
+        'list': list_of_clients_and_debts,
+        'min_debt': min_debt,
+        'car_min': car_min
+    }
+    return render(request, 'MyApp/debts.html', context=context)
 
 
 def login(request):

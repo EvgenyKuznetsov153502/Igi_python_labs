@@ -1,5 +1,6 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from .models import *
+from django.db.models import QuerySet
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -18,6 +19,25 @@ class CarAdmin(admin.ModelAdmin):
     search_fields = ('number', 'brand')
     list_filter = ('brand',)
     inlines = [PaymentInvoicesInline]
+    actions = ['det_invoices']
+
+    @admin.action(description='Проставить счета на оплату')
+    def det_invoices(self, request, qs: QuerySet):
+        for car in qs:
+            try:
+                # print('Номер места:', car.parking_space)
+                space = car.parking_space
+                invoice = PaymentInvoice()
+                invoice.parking_number = space.number
+                invoice.price = space.price
+                invoice.car = car
+                invoice.save()
+                car.debt += space.price
+                car.save()
+                self.message_user(request, 'Счета выставлены')
+            except:
+                # print("не у всех машин есть парковочные места")
+                self.message_user(request, 'Не у всех машин есть парковочные места', messages.ERROR)
 
 
 class ParkingSpaceAdmin(admin.ModelAdmin):

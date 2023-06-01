@@ -13,6 +13,9 @@ class PaymentInvoice(models.Model):
     def __str__(self):
         return f"{self.pk}: [{self.accrual_date}] [{self.payment_date}]"
 
+    def display_debt(self):
+        return str(self.car.debt)
+
     class Meta:
         verbose_name = 'Счет на оплату'
         verbose_name_plural = 'Счета на оплату'
@@ -52,6 +55,9 @@ class Car(models.Model):
 
     def display_client(self):
         return ', '.join([client.name for client in self.clients.all()[:3]])
+
+    def display_debt(self):
+        return str(self.debt)
 
     display_client.short_description = 'Clients'
 
