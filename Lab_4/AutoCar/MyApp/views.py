@@ -5,12 +5,42 @@ from django.contrib.auth.views import LoginView
 from django.db.models import F, Sum, Min
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, Http404
-from datetime import date
+from datetime import date, datetime
 from django.contrib.auth.decorators import user_passes_test
+from django.templatetags import tz
 from django.urls import reverse_lazy
+import requests
 
 from .forms import *
 from .models import Client, Car, ParkingSpace
+
+
+def get_ip_request():
+
+    ip_request = requests.get('http://ip-api.com/json/')
+    current_date = date.today()
+    if ip_request.status_code == 200:
+        ip_request = ip_request.json()
+        time_zone = ip_request['timezone']
+        current_date = date.today()
+    else:
+        time_zone = 'Не определен'
+    return {'zone': time_zone, 'cur_date': current_date }
+
+
+def get_bitkoin():
+    ip_request = requests.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+    if ip_request.status_code == 200:
+        ip_request = ip_request.json()
+        bpi = ip_request['bpi']
+        USD = bpi['USD']
+        EUR = bpi['EUR']
+        bit_rate_usd = USD['rate']
+        bit_rate_eur = EUR['rate']
+    else:
+        bit_rate_usd = 'Не определен'
+        bit_rate_eur = 'Не определен'
+    return {'USD': bit_rate_usd, 'EUR': bit_rate_eur}
 
 
 def is_admin(user):
@@ -32,13 +62,13 @@ menu = [
 def get_menu(request):
     user_menu = menu.copy()
     if not request.user.is_authenticated:
-        new_menu = [
+        new_menu = [  # для незарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
             {'title': "Регистрация", 'url_name': 'register'},
             {'title': "Войти", 'url_name': 'login'}
         ]
     elif request.user.is_staff:
-        new_menu = [
+        new_menu = [  # для адмниа
             {'title': "Главная страница", 'url_name': 'home'},
             {'title': "Клиенты", 'url_name': 'clients'},
             {'title': "Авто", 'url_name': 'cars'},
@@ -47,8 +77,9 @@ def get_menu(request):
             {'title': "Выйти", 'url_name': 'logout'}
         ]
     else:
-        new_menu = [
+        new_menu = [  # для зарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
+            {'title': "Личный кабинет", 'url_name': 'personal_account'},
             {'title': "Выйти", 'url_name': 'logout'}
         ]
     return new_menu
@@ -77,13 +108,6 @@ def home(request):
         'num_of_cars': num_of_cars,
         'average_price': average_price
     }
-
-    #if request.user.is_authenticated:
-     #   username = request.user.username
-      #  email = request.user.email
-       # print(username, email)
-    #else:
-     #print('Не зарегистрирован')
 
     return render(request, 'MyApp/home.html', context=context)
 
@@ -357,6 +381,34 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+
+@login_required(login_url='home')
+def personal_account(request):
+    user = request.user
+    if hasattr(user, 'client'):
+        cars = user.client.cars.all()
+    else:
+        raise Http404()
+    ip_date = get_ip_request()
+    zone = ip_date['zone']
+    cur_date = ip_date['cur_date']
+    bit = get_bitkoin()
+    USD = bit['USD']
+    EUR = bit['EUR']
+    print(USD,EUR)
+    new_menu = get_menu(request)
+    context = {
+        'title': 'Личный кабинет',
+        'menu': new_menu,
+        'my_cars': cars,
+        'user_name': user.username,
+        'zone': zone,
+        'cur_date': cur_date,
+        'USD': USD,
+        'EUR': EUR
+    }
+    return render(request, 'MyApp/personal_account.html', context=context)
 
 
 def pageNotFound(request, exception):

@@ -15,7 +15,8 @@ urlpatterns = [
     path('parking_spaces/add', add_parking_space, name='add_parking_space'),
     path('parking_spaces/<int:sp_id>/delete', delete_park_space, name='delete_park_space'),
     path('debts/', max_debt, name='debts'),
-    path('logout/', logout_user, name='logout')
+    path('logout/', logout_user, name='logout'),
+    path('personal_account/', personal_account, name='personal_account')
     # path('cars/<int:carid>/', cars),  # http://127.0.0.1:8000/cars/
     # re_path(r'^archive/(?P<year>[0-9]{4})/', archive),  # http://127.0.0.1:8000/cars/
 ]
