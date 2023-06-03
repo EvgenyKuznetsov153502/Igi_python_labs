@@ -1,19 +1,57 @@
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.views import LoginView
 from django.db.models import F, Sum, Min
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, Http404
 from datetime import date
+from django.contrib.auth.decorators import user_passes_test
+from django.urls import reverse_lazy
+
 from .forms import *
 from .models import Client, Car, ParkingSpace
 
-# menu = ['Главная страница', 'Войти']
+
+def is_admin(user):
+    return user.is_superuser
+
+
 menu = [
     {'title': "Главная страница", 'url_name': 'home'},
+    {'title': "Регистрация", 'url_name': 'register'},
     {'title': "Войти", 'url_name': 'login'},
     {'title': "Клиенты", 'url_name': 'clients'},
     {'title': "Авто", 'url_name': 'cars'},
     {'title': "Парковочные места", 'url_name': 'parking_spaces'},
-    {'title': "Долги", 'url_name': 'debts'}
+    {'title': "Долги", 'url_name': 'debts'},
+    {'title': "Выйти", 'url_name': 'logout'}
 ]
+
+
+def get_menu(request):
+    user_menu = menu.copy()
+    if not request.user.is_authenticated:
+        new_menu = [
+            {'title': "Главная страница", 'url_name': 'home'},
+            {'title': "Регистрация", 'url_name': 'register'},
+            {'title': "Войти", 'url_name': 'login'}
+        ]
+    elif request.user.is_staff:
+        new_menu = [
+            {'title': "Главная страница", 'url_name': 'home'},
+            {'title': "Клиенты", 'url_name': 'clients'},
+            {'title': "Авто", 'url_name': 'cars'},
+            {'title': "Парковочные места", 'url_name': 'parking_spaces'},
+            {'title': "Долги", 'url_name': 'debts'},
+            {'title': "Выйти", 'url_name': 'logout'}
+        ]
+    else:
+        new_menu = [
+            {'title': "Главная страница", 'url_name': 'home'},
+            {'title': "Выйти", 'url_name': 'logout'}
+        ]
+    return new_menu
 
 
 def home(request):
@@ -31,48 +69,62 @@ def home(request):
     else:
         average_price = total_price / num_of_spaces
 
+    new_menu = get_menu(request)
     context = {
         'title': 'Главная страница',
-        'menu': menu,
+        'menu': new_menu,
         'num_of_clients': num_of_clients,
         'num_of_cars': num_of_cars,
         'average_price': average_price
     }
 
+    #if request.user.is_authenticated:
+     #   username = request.user.username
+      #  email = request.user.email
+       # print(username, email)
+    #else:
+     #print('Не зарегистрирован')
+
     return render(request, 'MyApp/home.html', context=context)
 
 
+@user_passes_test(is_admin)
 def clients(request):
     clien = Client.objects.all()
+    new_menu = get_menu(request)
     context = {
         'title': 'Список клиентов',
-        'menu': menu,
+        'menu': new_menu,
         'my_clients': clien
     }
     return render(request, 'MyApp/clients.html', context=context)
 
 
+@user_passes_test(is_admin)
 def show_client(request, client_id):
     cl = Client.objects.filter(id=client_id)
-
+    new_menu = get_menu(request)
     context = {
         'title': 'Информация о клиенте',
-        'menu': menu,
+        'menu': new_menu,
         'my_client': cl
     }
     return render(request, 'MyApp/client_info.html', context=context)
 
 
+@user_passes_test(is_admin)
 def cars(request):
     cars = Car.objects.all()
+    new_menu = get_menu(request)
     context = {
         'title': 'Список автомобилей',
-        'menu': menu,
+        'menu': new_menu,
         'my_cars': cars
     }
     return render(request, 'MyApp/cars.html', context=context)
 
 
+@login_required(login_url='home')
 def show_car(request, car_id):
     car = Car.objects.filter(id=car_id)
 
@@ -106,10 +158,10 @@ def show_car(request, car_id):
                 form.add_error(None, 'Ошибка оплаты')
     else:
         form = PayForm()
-
+    new_menu = get_menu(request)
     context = {
         'title': 'Информация об автомобиле',
-        'menu': menu,
+        'menu': new_menu,
         'my_car': car,
         'spaces': spaces,
         'id': car_id,
@@ -119,16 +171,19 @@ def show_car(request, car_id):
     return render(request, 'MyApp/car_info.html', context=context)
 
 
+@user_passes_test(is_admin)
 def parking_spaces(request):
     spaces = ParkingSpace.objects.all()
+    new_menu = get_menu(request)
     context = {
         'title': 'Список парковочных мест',
-        'menu': menu,
+        'menu': new_menu,
         'spaces': spaces
     }
     return render(request, 'MyApp/park_spaces.html', context=context)
 
 
+@user_passes_test(is_admin)
 def show_park_space(request, sp_id):
     space = ParkingSpace.objects.filter(id=sp_id)
 
@@ -145,10 +200,10 @@ def show_park_space(request, sp_id):
                 form.add_error(None, 'Ошибка изменения цены')
     else:
         form = UpdatePrice()
-
+    new_menu = get_menu(request)
     context = {
         'title': 'Информация о парковочном месте',
-        'menu': menu,
+        'menu': new_menu,
         'space': space,
         'form': form,
         'id': sp_id
@@ -156,6 +211,7 @@ def show_park_space(request, sp_id):
     return render(request, 'MyApp/park_space_info.html', context=context)
 
 
+@user_passes_test(is_admin)
 def add_parking_space(request):
     # form = AddParkSpace()
     if request.method == "POST":
@@ -166,14 +222,16 @@ def add_parking_space(request):
             return redirect('parking_spaces')
     else:
         form = AddParkSpace()
+    new_menu = get_menu(request)
     context = {
         'title': 'Добавление парковочного места',
-        'menu': menu,
+        'menu': new_menu,
         'form': form
     }
     return render(request, 'MyApp/add_parking_space.html', context=context)
 
 
+@user_passes_test(is_admin)
 def delete_park_space(request, sp_id):
     try:
         sp = ParkingSpace.objects.get(id=sp_id)
@@ -183,6 +241,7 @@ def delete_park_space(request, sp_id):
         return HttpResponseNotFound("<h2>Ошибка удаления</h2>")
 
 
+@user_passes_test(is_admin)
 def max_debt(request):
     try:
         list_of_clients_and_debts = []  # лист из листов вида [клиент, долг]
@@ -218,10 +277,10 @@ def max_debt(request):
 
     except:
         return HttpResponseNotFound("Ошибка чтения")
-
+    new_menu = get_menu(request)
     context = {
         'title': 'Долги по клиентам',
-        'menu': menu,
+        'menu': new_menu,
         'max_debt': max_deb,
         'max_debt_client': max_debt_client,
         'last_date': last_date,
@@ -232,8 +291,72 @@ def max_debt(request):
     return render(request, 'MyApp/debts.html', context=context)
 
 
-def login(request):
-    return render(request, 'MyApp/login.html', {'title': 'Авторизация', 'menu': menu})
+def register(request):
+    # form = RegisterUserForm()
+    if request.method == 'POST':
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            # print(form.cleaned_data)
+            try:
+                print(form.cleaned_data)
+                login = form.cleaned_data['login']
+                password = form.cleaned_data['password1']
+                email = form.cleaned_data['email']
+                name = form.cleaned_data['name']
+                telephone = form.cleaned_data['telephone']
+                date_of_birth = form.cleaned_data['date_of_birth']
+                user = User()
+                client = Client()
+                user.username = login
+                user.email = email
+                user.set_password(password)
+                client.name = name
+                client.telephone = telephone
+                client.date_of_birth = date_of_birth
+                client.user = user
+                user.save()
+                client.save()
+                return redirect('login')
+            except:
+                form.add_error(None, 'Ошибка регистрации')
+
+    else:
+        form = RegisterUserForm()
+
+    new_menu = get_menu(request)
+    context = {
+        'title': 'Регистрация',
+        'menu': new_menu,
+        'form': form
+    }
+
+    return render(request, 'MyApp/register.html', context=context)
+
+
+menu_for_reg = [
+    {'title': "Главная страница", 'url_name': 'home'},
+    {'title': "Регистрация", 'url_name': 'register'},
+    {'title': "Войти", 'url_name': 'login'}
+]
+
+
+class LoginUser(LoginView):
+    form_class = AuthenticationForm
+    template_name = 'MyApp/login.html'
+    extra_context = {'title': 'Авторизация'}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu'] = menu_for_reg
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
 
 
 def pageNotFound(request, exception):
