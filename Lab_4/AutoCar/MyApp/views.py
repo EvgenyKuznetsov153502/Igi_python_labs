@@ -1,3 +1,6 @@
+import base64
+import io
+
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -7,16 +10,20 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, Http404
 from datetime import date, datetime
 from django.contrib.auth.decorators import user_passes_test
-from django.templatetags import tz
+import os
+import matplotlib.pyplot as plt
 from django.urls import reverse_lazy
 import requests
-
+import logging
 from .forms import *
 from .models import Client, Car, ParkingSpace
+from io import BytesIO
+
+logger = logging.getLogger('main')
 
 
 def get_ip_request():
-
+    logger.info("connecting to the time zone API")
     ip_request = requests.get('http://ip-api.com/json/')
     current_date = date.today()
     if ip_request.status_code == 200:
@@ -24,11 +31,13 @@ def get_ip_request():
         time_zone = ip_request['timezone']
         current_date = date.today()
     else:
+        logging.warning("failed to connect to timezone API")
         time_zone = 'Не определен'
     return {'zone': time_zone, 'cur_date': current_date }
 
 
 def get_bitkoin():
+    logger.info("request to the API to get data about bitcoin")
     ip_request = requests.get('https://api.coindesk.com/v1/bpi/currentprice.json')
     if ip_request.status_code == 200:
         ip_request = ip_request.json()
@@ -38,6 +47,7 @@ def get_bitkoin():
         bit_rate_usd = USD['rate']
         bit_rate_eur = EUR['rate']
     else:
+        logger.warning("failed to connect to bitcoin API")
         bit_rate_usd = 'Не определен'
         bit_rate_eur = 'Не определен'
     return {'USD': bit_rate_usd, 'EUR': bit_rate_eur}
@@ -74,6 +84,7 @@ def get_menu(request):
             {'title': "Авто", 'url_name': 'cars'},
             {'title': "Парковочные места", 'url_name': 'parking_spaces'},
             {'title': "Долги", 'url_name': 'debts'},
+            {'title': "Диаграмма", 'url_name': 'chart_view'},
             {'title': "Выйти", 'url_name': 'logout'}
         ]
     else:
@@ -86,6 +97,7 @@ def get_menu(request):
 
 
 def home(request):
+    logger.info("page home")
     num_of_clients = Client.objects.all().count()
     num_of_cars = Car.objects.all().count()
     spaces = ParkingSpace.objects.all()
@@ -114,6 +126,7 @@ def home(request):
 
 @user_passes_test(is_admin)
 def clients(request):
+    logger.info("viewing clients")
     clien = Client.objects.all()
     new_menu = get_menu(request)
     context = {
@@ -138,6 +151,7 @@ def show_client(request, client_id):
 
 @user_passes_test(is_admin)
 def cars(request):
+    logger.info("viewing cars")
     cars = Car.objects.all()
     new_menu = get_menu(request)
     context = {
@@ -150,6 +164,7 @@ def cars(request):
 
 @login_required(login_url='home')
 def show_car(request, car_id):
+    logger.info("viewing information about the car")
     car = Car.objects.filter(id=car_id)
 
     try:
@@ -165,6 +180,7 @@ def show_car(request, car_id):
         #print(message)
 
     except:
+        logger.error("there is no car with this id")
         return HttpResponseNotFound("<h2>Нету машины с таким id</h2>")
 
     if request.method == 'POST':
@@ -179,6 +195,7 @@ def show_car(request, car_id):
                 last_inv.save()
                 return redirect('car', car_id)
             except:
+                logger.error("payment error")
                 form.add_error(None, 'Ошибка оплаты')
     else:
         form = PayForm()
@@ -197,6 +214,7 @@ def show_car(request, car_id):
 
 @user_passes_test(is_admin)
 def parking_spaces(request):
+    logger.info("viewing parking spaces")
     spaces = ParkingSpace.objects.all()
     new_menu = get_menu(request)
     context = {
@@ -209,6 +227,7 @@ def parking_spaces(request):
 
 @user_passes_test(is_admin)
 def show_park_space(request, sp_id):
+    logger.info("viewing information about a parking space")
     space = ParkingSpace.objects.filter(id=sp_id)
 
     if request.method == 'POST':
@@ -221,6 +240,7 @@ def show_park_space(request, sp_id):
                 sp.save()
                 return redirect('parking_space', sp_id)
             except:
+                logger.error("changing the price of a parking space")
                 form.add_error(None, 'Ошибка изменения цены')
     else:
         form = UpdatePrice()
@@ -243,6 +263,7 @@ def add_parking_space(request):
         if form.is_valid():
             # print(form.cleaned_data)
             form.save()
+            logger.info("adding a parking space")
             return redirect('parking_spaces')
     else:
         form = AddParkSpace()
@@ -262,6 +283,7 @@ def delete_park_space(request, sp_id):
         sp.delete()
         return redirect('parking_spaces')
     except:
+        logger.error("removing a parking space")
         return HttpResponseNotFound("<h2>Ошибка удаления</h2>")
 
 
@@ -300,6 +322,7 @@ def max_debt(request):
         car_min = Car.objects.get(debt=min_debt)
 
     except:
+        logger.error("reading error in max_debt")
         return HttpResponseNotFound("Ошибка чтения")
     new_menu = get_menu(request)
     context = {
@@ -340,8 +363,10 @@ def register(request):
                 client.user = user
                 user.save()
                 client.save()
+                logger.info("registering a new user")
                 return redirect('login')
             except:
+                logger.error("error registering a new user")
                 form.add_error(None, 'Ошибка регистрации')
 
     else:
@@ -389,7 +414,9 @@ def personal_account(request):
     if hasattr(user, 'client'):
         cars = user.client.cars.all()
     else:
+        logger.error("error logging in to your personal account")
         raise Http404()
+    logger.info("logging in to your personal account")
     ip_date = get_ip_request()
     zone = ip_date['zone']
     cur_date = ip_date['cur_date']
@@ -411,14 +438,26 @@ def personal_account(request):
     return render(request, 'MyApp/personal_account.html', context=context)
 
 
+@user_passes_test(is_admin)
+def chart_view(request):
+    data = []
+    labels = []
+    spaces = ParkingSpace.objects.all()
+    for sp in spaces:
+        data.append(sp.price)
+        labels.append(str(sp.number))
+    plt.bar(labels, data)
+    plt.xlabel('Номера')
+    plt.ylabel('Цены')
+    plt.title('Диаграмма цен парковочных мест')
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    return HttpResponse(buffer.getvalue(), content_type='image/png')
+
+
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
 
 
-def archive(request, year):
-    if int(year) > 2023:
-        return redirect('home')
-
-    return HttpResponse(f"<h1>Архив по годам</h1><p>{year}</p>")
 
 
