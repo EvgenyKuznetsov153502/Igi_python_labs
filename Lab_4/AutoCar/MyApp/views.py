@@ -12,6 +12,7 @@ from datetime import date, datetime
 from django.contrib.auth.decorators import user_passes_test
 import os
 import matplotlib.pyplot as plt
+import matplotlib
 from django.urls import reverse_lazy
 import requests
 import logging
@@ -440,6 +441,7 @@ def personal_account(request):
 
 @user_passes_test(is_admin)
 def chart_view(request):
+    matplotlib.use('agg')
     data = []
     labels = []
     spaces = ParkingSpace.objects.all()
