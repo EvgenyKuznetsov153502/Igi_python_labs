@@ -58,23 +58,24 @@ def is_admin(user):
     return user.is_superuser
 
 
-menu = [
-    {'title': "Главная страница", 'url_name': 'home'},
-    {'title': "Регистрация", 'url_name': 'register'},
-    {'title': "Войти", 'url_name': 'login'},
-    {'title': "Клиенты", 'url_name': 'clients'},
-    {'title': "Авто", 'url_name': 'cars'},
-    {'title': "Парковочные места", 'url_name': 'parking_spaces'},
-    {'title': "Долги", 'url_name': 'debts'},
-    {'title': "Выйти", 'url_name': 'logout'}
-]
+# menu = [
+#     {'title': "Главная страница", 'url_name': 'home'},
+#     {'title': "Регистрация", 'url_name': 'register'},
+#     {'title': "Войти", 'url_name': 'login'},
+#     {'title': "Клиенты", 'url_name': 'clients'},
+#     {'title': "Авто", 'url_name': 'cars'},
+#     {'title': "Парковочные места", 'url_name': 'parking_spaces'},
+#     {'title': "Долги", 'url_name': 'debts'},
+#     {'title': "Выйти", 'url_name': 'logout'}
+# ]
 
 
 def get_menu(request):
-    user_menu = menu.copy()
+    # user_menu = menu.copy()
     if not request.user.is_authenticated:
         new_menu = [  # для незарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
+            {'title': "О компании", 'url_name': 'about_company'},
             {'title': "Регистрация", 'url_name': 'register'},
             {'title': "Войти", 'url_name': 'login'}
         ]
@@ -385,6 +386,7 @@ def register(request):
 
 menu_for_reg = [
     {'title': "Главная страница", 'url_name': 'home'},
+    {'title': "О компании", 'url_name': 'about_company'},
     {'title': "Регистрация", 'url_name': 'register'},
     {'title': "Войти", 'url_name': 'login'}
 ]
@@ -455,6 +457,15 @@ def chart_view(request):
     buffer = io.BytesIO()
     plt.savefig(buffer, format='png')
     return HttpResponse(buffer.getvalue(), content_type='image/png')
+
+
+def about_company(request):
+    new_menu = get_menu(request)
+    context = {
+        'title': 'О компании',
+        'menu': new_menu
+    }
+    return render(request, 'MyApp/about_company.html', context=context)
 
 
 def pageNotFound(request, exception):

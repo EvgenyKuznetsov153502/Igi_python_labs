@@ -52,9 +52,46 @@ class PaymentInvoiceAdmin(admin.ModelAdmin):
     list_filter = ('price', 'accrual_date', 'payment_date')
 
 
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'photo', 'description', 'telephone', 'email')
+    search_fields = ('name',)
+
+
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'content', 'short_description', 'photo')
+    search_fields = ('title',)
+
+
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content', 'answer', 'time_create')
+    search_fields = ('content',)
+
+
+class VacancyAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'description')
+    search_fields = ('name',)
+
+
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('id', 'username', 'mark', 'content', 'time_create')
+    search_fields = ('username',)
+
+
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ('id', 'code', 'description', 'is_valid')
+    search_fields = ('code', 'description')
+
+
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Car, CarAdmin)
 admin.site.register(ParkingSpace, ParkingSpaceAdmin)
 admin.site.register(PaymentInvoice, PaymentInvoiceAdmin)
+admin.site.register(News, NewsAdmin)
+admin.site.register(Question, QuestionAdmin)
+admin.site.register(Vacancy, VacancyAdmin)
+admin.site.register(Review, ReviewAdmin)
+admin.site.register(Coupon, CouponAdmin)
+admin.site.register(Employee, EmployeeAdmin)
+
 
 
