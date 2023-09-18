@@ -97,6 +97,7 @@ class News(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     short_description = models.TextField()
+    time_create = models.DateTimeField(auto_now_add=True)
     photo = models.ImageField(upload_to="news_images/%Y/%m/%d/")
 
     def __str__(self):

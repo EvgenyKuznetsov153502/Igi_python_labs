@@ -1,13 +1,56 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
-<h1 align="center">Автостоянка AutoCar</h1>
+{% load static %}
+<header><h1 align="center">Автостоянка AutoCar</h1></header>
+<main>
 <h3>Услуги, которые мы предоставляем клиентам:</h3>
-<p>-Круглосуточное отопление стоянки (что сохраняет время автовладельцев на прогрев автомобиля)</p>
-<p>-Автоматизированная система наблюдения (т.е. гарантии безопасности автомобиля)</p>
-<p>-Контроль всех выходов из комплекса автостоянки</p>
-<p>-Предоставление закрытого парковочного места (что дает возможность избежать загрязнения от погодных условий)</p>
-<h3>Количество клиентов: {{num_of_clients}}</h3>
-<h3>Количесвто автомобилей: {{num_of_cars}}</h3>
-<h3>Средняя цена за парковочное место: {{average_price}} $</h3>
+    <ul>
+        <li>Круглосуточное отопление стоянки (что сохраняет время автовладельцев на прогрев автомобиля)</li>
+        <li>Автоматизированная система наблюдения (т.е. гарантии безопасности автомобиля)</li>
+        <li>Контроль всех выходов из комплекса автостоянки</li>
+        <li>Предоставление закрытого парковочного места (что дает возможность избежать загрязнения от погодных условий)</li>
+
+    </ul>
+    <section>
+        <h3>Количество клиентов: {{num_of_clients}}</h3>
+        <h3>Количесвто автомобилей: {{num_of_cars}}</h3>
+        <h3>Средняя цена за парковочное место: {{average_price}} $</h3>
+    </section>
+<hr>
+<h3 align="center">Краткая информация о последней опубликованной статье:</h3>
+    <article>
+        <p><strong>Название: </strong> {{last_news.title}}</p>
+        <p><strong>Краткое описание: </strong>{{last_news.short_description}}</p>
+    </article>
+    <hr>
+    <div class="advertisement">
+        <a href="https://mak.by/ru/" target="blank">
+            <img src="{% static 'MyApp/images/banner.png' %} ", alt="Реклама" title="mak.by">
+        </a>
+    </div>
+    <hr>
+    <h3>Наши партнеры</h3>
+    <div class="partners">
+        <a href="https://www.tinkoff.ru/" class="partner-link" target="blank">
+            <img src="{% static 'MyApp/images/tinkoff.jpg'%}" alt="Логотип 1" class="partner-logo" title="Tinkoff" >
+        </a>
+
+        <a href="https://by.ebay.com/" class="partner-link" target="blank">
+            <img src="{% static 'MyApp/images/ebay.png'%}" alt="Логотип 2" class="partner-logo" title="Ebay" >
+        </a>
+
+        <a href="https://www.mercedes-benz.com/en/" class="partner-link" target="blank">
+            <img src="{% static 'MyApp/images/mercedes.png'%}" alt="Логотип 3" class="partner-logo" title="Mercedes-Benz" >
+        </a>
+
+        <a href="https://www.amazon.com/" class="partner-link" target="blank">
+            <img src="{% static 'MyApp/images/amazon.png'%}" alt="Логотип 4" class="partner-logo" title="Amazon" >
+        </a>
+
+        <a href="https://yandex.by/" class="partner-link" target="blank">
+            <img src="{% static 'MyApp/images/yandex.png'%}" alt="Логотип 5" class="partner-logo" title="Yandex" >
+        </a>
+    </div>
+</main>
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+<main>
 {% if my_client.count %}
       {% for c in my_client %}
       <div class="client-info">
@@ -16,4 +17,5 @@
     {% else %}
       <p>Нету клиента c таким id </p>
     {% endif %}
+    </main>
 {% endblock %}

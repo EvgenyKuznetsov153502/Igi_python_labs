@@ -1,6 +1,7 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+<main>
 <div class="data-container">
     <p>Часовой пояс: {{zone}}</p>
     <p>Дата: {{cur_date}}</p>
@@ -24,4 +25,5 @@
     {% else %}
       <p>Нету ни одной машины</p>
     {% endif %}
+    </main>
 {% endblock %}

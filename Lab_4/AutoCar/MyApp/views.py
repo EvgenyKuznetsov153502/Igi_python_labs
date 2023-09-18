@@ -58,18 +58,6 @@ def is_admin(user):
     return user.is_superuser
 
 
-# menu = [
-#     {'title': "Главная страница", 'url_name': 'home'},
-#     {'title': "Регистрация", 'url_name': 'register'},
-#     {'title': "Войти", 'url_name': 'login'},
-#     {'title': "Клиенты", 'url_name': 'clients'},
-#     {'title': "Авто", 'url_name': 'cars'},
-#     {'title': "Парковочные места", 'url_name': 'parking_spaces'},
-#     {'title': "Долги", 'url_name': 'debts'},
-#     {'title': "Выйти", 'url_name': 'logout'}
-# ]
-
-
 def get_menu(request):
     # user_menu = menu.copy()
     if not request.user.is_authenticated:
@@ -104,6 +92,7 @@ def home(request):
     num_of_cars = Car.objects.all().count()
     spaces = ParkingSpace.objects.all()
     num_of_spaces = spaces.count()
+    last_news = News.objects.latest('time_create')
 
     total_price = 0
     for s in spaces:
@@ -120,7 +109,8 @@ def home(request):
         'menu': new_menu,
         'num_of_clients': num_of_clients,
         'num_of_cars': num_of_cars,
-        'average_price': average_price
+        'average_price': average_price,
+        'last_news': last_news
     }
 
     return render(request, 'MyApp/home.html', context=context)

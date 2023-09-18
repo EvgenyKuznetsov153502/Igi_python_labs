@@ -58,7 +58,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'content', 'short_description', 'photo')
+    list_display = ('id', 'title', 'content', 'short_description', 'photo', 'time_create')
     search_fields = ('title',)
 
 

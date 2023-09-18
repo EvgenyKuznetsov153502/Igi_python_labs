@@ -1,6 +1,7 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+<main>
 <h2>{{title}}</h2>
 
 <form action="{% url 'add_parking_space' %}" method="post">
@@ -8,5 +9,5 @@
     {{form.as_p}}
     <button type="submit">Добавить</button>
 </form>
-
+</main>
 {% endblock %}
