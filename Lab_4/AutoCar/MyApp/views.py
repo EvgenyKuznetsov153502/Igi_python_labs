@@ -63,9 +63,7 @@ def get_menu(request):
     if not request.user.is_authenticated:
         new_menu = [  # для незарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
-            {'title': "О компании", 'url_name': 'about_company'},
             {'title': "Новости", 'url_name': 'news'},
-            {'title': "Вопросы", 'url_name': 'question'},
             {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Регистрация", 'url_name': 'register'},
             {'title': "Войти", 'url_name': 'login'}
@@ -73,6 +71,8 @@ def get_menu(request):
     elif request.user.is_staff:
         new_menu = [  # для адмниа
             {'title': "Главная страница", 'url_name': 'home'},
+            {'title': "Новости", 'url_name': 'news'},
+            {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Клиенты", 'url_name': 'clients'},
             {'title': "Авто", 'url_name': 'cars'},
             {'title': "Парковочные места", 'url_name': 'parking_spaces'},
@@ -84,10 +84,20 @@ def get_menu(request):
         new_menu = [  # для зарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
             {'title': "Личный кабинет", 'url_name': 'personal_account'},
+            {'title': "Новости", 'url_name': 'news'},
             {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Выйти", 'url_name': 'logout'}
         ]
     return new_menu
+
+
+aside_menu = [
+    {'title': "О компании", 'url_name': 'about_company'},
+    {'title': "Вопросы", 'url_name': 'question'},
+    {'title': "Контакты", 'url_name': 'contacts'},
+    {'title': "Вакансии", 'url_name': 'vacancies'},
+    {'title': "Купоны", 'url_name': 'coupons'}
+]
 
 
 def home(request):
@@ -114,7 +124,8 @@ def home(request):
         'num_of_clients': num_of_clients,
         'num_of_cars': num_of_cars,
         'average_price': average_price,
-        'last_news': last_news
+        'last_news': last_news,
+        'aside_menu': aside_menu
     }
 
     return render(request, 'MyApp/home.html', context=context)
@@ -380,10 +391,8 @@ def register(request):
 
 menu_for_reg = [
     {'title': "Главная страница", 'url_name': 'home'},
-    {'title': "О компании", 'url_name': 'about_company'},
     {'title': "Новости", 'url_name': 'news'},
     {'title': "Отзывы", 'url_name': 'reviews'},
-    {'title': "Вопросы", 'url_name': 'question'},
     {'title': "Регистрация", 'url_name': 'register'},
     {'title': "Войти", 'url_name': 'login'},
 ]
@@ -541,6 +550,39 @@ def review_handler(request):
         rev.save()
         return redirect('reviews')
     return redirect('add_review_button')
+
+
+def contacts(request):
+    contact = Employee.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': "Контакты",
+        'menu': new_menu,
+        'contacts': contact
+    }
+    return render(request, 'MyApp/contacts.html', context=context)
+
+
+def vacancies(request):
+    vacancy = Vacancy.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': "Вакансии",
+        'menu': new_menu,
+        'vacancy': vacancy
+    }
+    return render(request, 'MyApp/vacancy.html', context=context)
+
+
+def coupons(request):
+    coupon = Coupon.objects.filter(is_valid=True)
+    new_menu = get_menu(request)
+    context = {
+        'title': "Купоны",
+        'menu': new_menu,
+        'coupon': coupon
+    }
+    return render(request, 'MyApp/coupon.html', context=context)
 
 
 def pageNotFound(request, exception):

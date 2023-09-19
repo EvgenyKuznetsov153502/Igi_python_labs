@@ -5,6 +5,8 @@
 <h1 align="center">{{title}}</h1>
     <form action="{% url 'review_handler' %}"  method="post">
         {% csrf_token %}
+        <fieldset title="add_review">
+            <legend>Ваш отзыв</legend>
         <div>
             <label for="rating">Оценка</label>
             <select id="rating" name="rating" required>
@@ -23,6 +25,7 @@
         <div>
             <input type="submit" value="Отправить">
         </div>
+        </fieldset>
     </form>
 </main>
 {% endblock %}

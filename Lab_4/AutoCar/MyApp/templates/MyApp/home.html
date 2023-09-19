@@ -3,7 +3,7 @@
 {% block content %}
 {% load static %}
 <header><h1 align="center">Автостоянка AutoCar</h1></header>
-<main>
+<main class="content">
     <section>
 <h3>Услуги, которые мы предоставляем клиентам:</h3>
     <ul>
@@ -53,5 +53,15 @@
             <img src="{% static 'MyApp/images/yandex.png'%}" alt="Логотип 5" class="partner-logo" title="Yandex" >
         </a>
     </div>
+    <aside class="sidebar">
+
+            <h2>Доп секции</h2>
+            <ul class="amenu">
+                {% for m in aside_menu %}
+                <li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+                {% endfor %}
+            </ul>
+
+    </aside>
 </main>
 {% endblock %}
