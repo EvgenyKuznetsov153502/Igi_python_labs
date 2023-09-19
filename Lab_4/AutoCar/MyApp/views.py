@@ -64,6 +64,9 @@ def get_menu(request):
         new_menu = [  # для незарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
             {'title': "О компании", 'url_name': 'about_company'},
+            {'title': "Новости", 'url_name': 'news'},
+            {'title': "Вопросы", 'url_name': 'question'},
+            {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Регистрация", 'url_name': 'register'},
             {'title': "Войти", 'url_name': 'login'}
         ]
@@ -81,6 +84,7 @@ def get_menu(request):
         new_menu = [  # для зарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
             {'title': "Личный кабинет", 'url_name': 'personal_account'},
+            {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Выйти", 'url_name': 'logout'}
         ]
     return new_menu
@@ -377,8 +381,11 @@ def register(request):
 menu_for_reg = [
     {'title': "Главная страница", 'url_name': 'home'},
     {'title': "О компании", 'url_name': 'about_company'},
+    {'title': "Новости", 'url_name': 'news'},
+    {'title': "Отзывы", 'url_name': 'reviews'},
+    {'title': "Вопросы", 'url_name': 'question'},
     {'title': "Регистрация", 'url_name': 'register'},
-    {'title': "Войти", 'url_name': 'login'}
+    {'title': "Войти", 'url_name': 'login'},
 ]
 
 
@@ -456,6 +463,84 @@ def about_company(request):
         'menu': new_menu
     }
     return render(request, 'MyApp/about_company.html', context=context)
+
+
+def news(request):
+    articles = News.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': 'Новости',
+        'menu': new_menu,
+        'news': articles
+    }
+    return render(request, 'MyApp/news.html', context=context)
+
+
+def article(request, news_id):
+    new = News.objects.get(id=news_id)
+    title = new.title
+    new_menu = get_menu(request)
+    context = {
+        'title': title,
+        'menu': new_menu,
+        'new': new
+    }
+    return render(request, 'MyApp/article.html', context=context)
+
+
+def questions(request):
+    questions = Question.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': "Вопросы",
+        'header': "Часто задаваемые вопросы",
+        'menu': new_menu,
+        'questions':  questions
+    }
+    return render(request, 'MyApp/questions.html', context=context)
+
+
+def reviews(request):
+    rev = Review.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': "Отзывы",
+        'menu': new_menu,
+        'reviews': rev
+    }
+    return render(request, 'MyApp/reviews.html', context=context)
+
+
+def add_review_button(request):
+    if request.user.is_authenticated:
+        return redirect('add_review')
+    else:
+        return redirect('register')
+
+
+def add_review(request):
+    new_menu = get_menu(request)
+    marks = range(1, 11)
+    context = {
+        'title': "Добавление отзыва",
+        'menu': new_menu,
+        'marks': marks
+    }
+    return render(request, 'MyApp/add_review.html', context=context)
+
+
+def review_handler(request):
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        review = request.POST.get('review')
+        user_name = request.user.username
+        rev = Review()
+        rev.username = user_name
+        rev.content = review
+        rev.mark = rating
+        rev.save()
+        return redirect('reviews')
+    return redirect('add_review_button')
 
 
 def pageNotFound(request, exception):

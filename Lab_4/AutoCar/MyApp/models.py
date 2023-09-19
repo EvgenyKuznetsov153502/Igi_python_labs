@@ -100,6 +100,9 @@ class News(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     photo = models.ImageField(upload_to="news_images/%Y/%m/%d/")
 
+    def get_absolute_url(self):
+        return reverse('article', kwargs={'news_id': self.pk})
+
     def __str__(self):
         return self.title
 
@@ -148,7 +151,7 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
-        ordering = ['time_create']
+        ordering = ['-time_create']
 
 
 class Coupon(models.Model):

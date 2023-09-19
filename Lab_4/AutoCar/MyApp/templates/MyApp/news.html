@@ -1,0 +1,22 @@
+{% extends 'MyApp/base.html' %}
+
+{% block content %}
+<main>
+<h1 align="center">{{title}}</h1>
+    {% if news.count %}
+        {% for n in news %}
+        <article>
+        <h3 align="center">{{n}}</h3>
+        <img src="{{n.photo.url}}" alt = "gsi" width="300" height="200">
+        <time datetime="{{n.time_create}}">{{n.time_create}}</time>
+        <p>{{n.short_description| linebreaks}}</p>
+        <a href="{{ n.get_absolute_url }}">
+            <button>Читать далее</button>
+        </a>
+        </article>
+        {% endfor %}
+    {% else %}
+      <p>Нету новостей</p>
+    {% endif %}
+</main>
+{% endblock %}
