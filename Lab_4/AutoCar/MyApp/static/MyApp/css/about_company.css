@@ -1,0 +1,12 @@
+#abbr-list li:nth-child(2){
+  color: #501F3A;
+}
+
+#abbr-list li:first-child{
+  color: #501F3A;
+}
+
+#abbr-list li:last-child{
+  color: #501F3A;
+}
+

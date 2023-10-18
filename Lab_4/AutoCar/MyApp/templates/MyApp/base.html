@@ -15,7 +15,7 @@
 <body>
 
 {% block mainmenu %}
-<nav>
+<nav id="nav">
     <ul class="menu">
         {% for m in menu %}
         <li><a href="{% url m.url_name %}">{{m.title}}</a></li>
@@ -27,11 +27,12 @@
 {% block content %}
 {% endblock %}
 {% block footer %}
-<footer>
-    <address>
+<footer id="footer">
+    <address class="address">
     Made by Eugene  Kuznetsov
     <a href = "https://www.instagram.com/evgeny_kuznetsovvv/" target="_blank">
-        <img src="{% static 'MyApp/images/inst.png' %}" alt = "Instagram" class = "instagram-logo" title="Instagram">
+        <img src="{% static 'MyApp/images/inst.png' %}" alt = "Instagram"
+             class = "instagram-logo" title="Instagram">
     </a>
     </address>
 </footer>

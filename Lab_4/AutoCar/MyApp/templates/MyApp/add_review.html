@@ -1,14 +1,15 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/add_review.css' %}">
 <main>
 <h1 align="center">{{title}}</h1>
     <form action="{% url 'review_handler' %}"  method="post">
         {% csrf_token %}
-        <fieldset title="add_review">
-            <legend>Ваш отзыв</legend>
-        <div>
-            <label for="rating">Оценка</label>
+
+        <div id="input-rate">
+            <label for="rating" class="lab-review">Оценка</label>
             <select id="rating" name="rating" required>
                 <option value="" disabled selected>Выберите оценку</option>
                 {% for mark in marks %}
@@ -17,15 +18,14 @@
             </select>
         </div>
         <br>
-        <div>
-            <label>Отзыв:</label>
-            <textarea id="review" name="review" rows="4" cols="70" required></textarea>
+        <div id="input-field">
+            <label class="lab-review">Отзыв:</label>
+            <textarea id="review" name="review" rows="7" cols="70" required></textarea>
         </div>
         <br>
-        <div>
-            <input type="submit" value="Отправить">
+        <div class="but">
+            <input type="submit" value="Отправить" id="button-send" align="right">
         </div>
-        </fieldset>
     </form>
 </main>
 {% endblock %}

@@ -1,6 +1,8 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+  {% load static %}
+ <link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/personal_account.css' %}">
 <main>
 <div class="data-container">
     <p>Часовой пояс: {{zone}}</p>
@@ -13,7 +15,7 @@
 <h2>Ваши автомобили:</h2>
 
 {% if my_cars.count %}
-    <ul>
+    <ul class="personal_auto">
 
       {% for c in my_cars %}
       <li>

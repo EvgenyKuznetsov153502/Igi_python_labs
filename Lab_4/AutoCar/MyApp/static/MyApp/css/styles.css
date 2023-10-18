@@ -1,67 +1,74 @@
-    ul.menu {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      background-color: #f1f1f1;
-      overflow: hidden;
-    }
+body{
+background: #CCCCCC;
+font-size: 1.15em;
+}
 
-    ul.menu li {
-      float: left;
-    }
+ul.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  align: center;
+  background-color: #000000;
+  overflow: hidden;
+  border-radius: 15px;
+  border: 2px solid #14A098;
+}
 
-    ul.menu li a {
-      display: block;
-      color: #333;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-    }
+ul.menu > li {
+  float: left;
+}
 
-    ul.menu li a:hover {
-      background-color: #ddd;
-    }
+ul.menu li a {
+  display: block;
+  color: #14A098;
+  font-weight: bold;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
 
-    .client-info {
-      margin: 20px;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-family: Arial, sans-serif;
-    }
+ul.menu li a:hover {
+   background-color: #0F292F;
+}
 
-    .client-info h2 {
-      margin-top: 0;
-    }
+ul.menu li a:active {
+   background-color: #00755e;
+}
 
-    .client-info p {
-      margin-bottom: 10px;
-    }
+.client-info {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+}
 
-    .data-container {
-            position: fixed;
-            top: 70px;
-            right: 10px;
-            background-color: #f1f1f1;
-            padding: 10px;
-    }
+.client-info h2 {
+  margin-top: 0;
+}
+
+.client-info p {
+  margin-bottom: 10px;
+}
+
+
 
 /* Основной стиль для блока footer */
 footer {
-  background-color: #333;
+  background-color: #000000;
   color: #fff;
   padding: 10px;
   text-align: center;
   position: fixed;
   bottom: 0;
   width: 100%;
+  float: left;
 }
 
 
 
 /* Стиль для ссылок внутри footer */
 footer a {
-  color: #fff;
   text-decoration: none;
   margin: 0 10px;
 }
@@ -73,10 +80,12 @@ footer a:hover {
 
 main {
     margin-bottom: 60px;
+    margin-left: 1%;
+    margin-right: 1%;
 }
 
 /* Стиль для логотипа Instagram */
-footer .instagram-logo {
+img[title="Instagram"] {
   width: 20px; /* Размер логотипа Instagram */
   vertical-align: middle; /* Выравнивание по вертикали */
   margin-left: 5px; /* Внешний отступ слева от логотипа */
@@ -85,7 +94,6 @@ footer .instagram-logo {
 .advertisement {
   display: block;
   text-align: center; /* Центрирование контента в баннере */
-  background-color: #f0f0f0; /* Цвет фона баннера */
   padding: 10px; /* Внутренний отступ вокруг рекламы */
 }
 
@@ -99,7 +107,6 @@ partners {
   justify-content: center; /* Выравнивание по горизонтали по центру */
   align-items: center; /* Выравнивание по вертикали по центру */
   padding: 20px; /* Внутренний отступ между компаниями */
-  background-color: #f0f0f0; /* Цвет фона списка партнеров */
 }
 
 .partner-link {
@@ -111,3 +118,67 @@ partners {
   max-width: 100px; /* Максимальная ширина логотипа */
   height: auto; /* Автоматическое сохранение пропорций логотипа */
 }
+
+.sidebar{
+  width: 12%;
+  margin-left: 5%;
+  padding: 20px;
+  padding 20px, 2.5%;
+  float: left;
+  line-height:40px;
+  background: #000000;
+  border-radius: 45px;
+  border: 3px solid #14A098;
+}
+
+.sidebar li a {
+  color: #fff;
+  padding:0;
+  text-decoration: none;
+  font-size: 1.1em;
+}
+
+.sidebar li a:hover {
+  color: #14A098;
+}
+
+.sidebar li a:active {
+  color: #71e0ca;
+}
+
+#side_title{
+  color: #14A098;
+  align-text: center;
+  font-family: 'Helvetica', Arial, sans-serif;
+  text-transform: uppercase;
+  }
+
+#services {
+  width: 80%;
+  float: left;
+}
+
+#main_info{
+float: left;
+width: 100%;
+}
+
+#logos{
+float: left;
+width:100%;
+margin-bottom: 3%;
+}
+
+.amenu{
+  list-style-type: none;
+}
+
+/* начинается с подстроки */
+h3[title^="header"]{
+  color: #CB2D6F;
+}
+/* заканчивается подстрокой */
+h3[title$="new"]{
+  color: #501F3A;
+}
+

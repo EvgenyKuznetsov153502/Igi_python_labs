@@ -4,8 +4,9 @@
 {% load static %}
 <header><h1 align="center">Автостоянка AutoCar</h1></header>
 <main class="content">
+    <div id="services">
     <section>
-<h3>Услуги, которые мы предоставляем клиентам:</h3>
+        <h3 title="header-services">Услуги, которые мы предоставляем клиентам:</h3>
     <ul>
         <li>Круглосуточное отопление стоянки (что сохраняет время автовладельцев на прогрев автомобиля)</li>
         <li>Автоматизированная система наблюдения (т.е. гарантии безопасности автомобиля)</li>
@@ -18,12 +19,25 @@
         <h3>Количесвто автомобилей: {{num_of_cars}}</h3>
         <h3>Средняя цена за парковочное место: {{average_price}} $</h3>
     </section>
-<hr>
-<h3 align="center">Краткая информация о последней опубликованной статье:</h3>
+    </div>
+    <aside class="sidebar">
+
+            <h2 id="side_title" align="center">Доп секции</h2>
+            <ul class="amenu">
+                {% for m in aside_menu %}
+                <li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+                {% endfor %}
+            </ul>
+    </aside>
+
+    <div id="main_info">
+<h3 align="center" title="header-last-new">Краткая информация о последней опубликованной статье:</h3>
     <article>
         <p><b>Название: </b> {{last_news.title}}</p>
         <p><b>Краткое описание: </b>{{last_news.short_description}}</p>
     </article>
+    </div>
+     <div id="logos">
     <hr>
     <div class="advertisement">
         <a href="https://mak.by/ru/" target="blank">
@@ -53,15 +67,7 @@
             <img src="{% static 'MyApp/images/yandex.png'%}" alt="Логотип 5" class="partner-logo" title="Yandex" >
         </a>
     </div>
-    <aside class="sidebar">
+    </div>
 
-            <h2>Доп секции</h2>
-            <ul class="amenu">
-                {% for m in aside_menu %}
-                <li><a href="{% url m.url_name %}">{{m.title}}</a></li>
-                {% endfor %}
-            </ul>
-
-    </aside>
 </main>
 {% endblock %}

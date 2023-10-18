@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+ <link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/about_company.css' %}">
 <main>
 <h1 align="center">{{title}}</h1>
     <section>
@@ -36,7 +37,7 @@
     <hr>
     <section>
         <h2 align="center">Сокращения</h2>
-        <ol>
+        <ol id="abbr-list">
             <li><abbr title="Автостоянка">АС</abbr> - Автостоянка</li>
             <li><abbr title="Парковочное место">ПМ</abbr> - Парковочное место</li>
             <li><abbr title="Бронирование места">БМ</abbr> - Бронирование места</li>
