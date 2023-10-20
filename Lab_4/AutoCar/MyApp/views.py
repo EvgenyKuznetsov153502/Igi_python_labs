@@ -63,7 +63,7 @@ def get_menu(request):
     if not request.user.is_authenticated:
         new_menu = [  # для незарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
-            {'title': "Новости", 'url_name': 'news'},
+            {'title': "Новости", 'url_name': 'news.css'},
             {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Регистрация", 'url_name': 'register'},
             {'title': "Войти", 'url_name': 'login'}
@@ -71,7 +71,7 @@ def get_menu(request):
     elif request.user.is_staff:
         new_menu = [  # для адмниа
             {'title': "Главная страница", 'url_name': 'home'},
-            {'title': "Новости", 'url_name': 'news'},
+            {'title': "Новости", 'url_name': 'news.css'},
             {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Клиенты", 'url_name': 'clients'},
             {'title': "Авто", 'url_name': 'cars'},
@@ -84,7 +84,7 @@ def get_menu(request):
         new_menu = [  # для зарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
             {'title': "Личный кабинет", 'url_name': 'personal_account'},
-            {'title': "Новости", 'url_name': 'news'},
+            {'title': "Новости", 'url_name': 'news.css'},
             {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Выйти", 'url_name': 'logout'}
         ]
@@ -391,7 +391,7 @@ def register(request):
 
 menu_for_reg = [
     {'title': "Главная страница", 'url_name': 'home'},
-    {'title': "Новости", 'url_name': 'news'},
+    {'title': "Новости", 'url_name': 'news.css'},
     {'title': "Отзывы", 'url_name': 'reviews'},
     {'title': "Регистрация", 'url_name': 'register'},
     {'title': "Войти", 'url_name': 'login'},

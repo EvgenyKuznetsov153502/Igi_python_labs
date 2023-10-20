@@ -1,68 +1,99 @@
-    ul.menu {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      background-color: #333;
-      overflow: hidden;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700;800&display=swap');
+
+body{
+background: #CCCCCC;
+font-size: 1.15em;
+}
+
+button{
+  background: #501F3A;
+  width:120px;
+  height: 45px;
+  border-radius:15px;
+  font-size: 0.9em;
+  border: 2px solid #CB2D6F;
+  cursor: pointer;
+  color: white;
+}
+
+button:hover{
+  background: #9c1968;
+}
+
+button:active{
+  background: #b897ab;
+}
+
+ul.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  align: center;
+  background-color: #000000;
+  overflow: hidden;
+  border-radius: 15px;
+  border: 2px solid #14A098;
+  position: fixed;
+  top: 3px;
+  left: 5px;
+  width: 99%;
+}
+
+ul.menu > li {
+  float: left;
+}
+
+ul.menu li a {
+  display: block;
+  color: #14A098;
+  font-weight: bold;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+ul.menu li a:hover {
+   background-color: #0F292F;
+}
+
+ul.menu li a:active {
+   background-color: #00755e;
+}
+
+.client-info {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+}
+
+.client-info h2 {
+  margin-top: 0;
+}
+
+.client-info p {
+  margin-bottom: 10px;
+}
 
 
-    ul.menu li {
-      float: left;
-    }
-
-    ul.menu li a {
-      display: block;
-      color: #b1f48c;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-    }
-
-    ul.menu li a:hover {
-      background-color: #ddd;
-    }
-
-    .client-info {
-      margin: 20px;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-family: Arial, sans-serif;
-    }
-
-    .client-info h2 {
-      margin-top: 0;
-    }
-
-    .client-info p {
-      margin-bottom: 10px;
-    }
-
-    .data-container {
-            position: fixed;
-            top: 70px;
-            right: 10px;
-            background-color: #f1f1f1;
-            padding: 10px;
-    }
 
 /* Основной стиль для блока footer */
 footer {
-  background-color: #333;
+  background-color: #000000;
   color: #fff;
   padding: 10px;
   text-align: center;
   position: fixed;
   bottom: 0;
   width: 100%;
+  float: left;
 }
 
 
 
 /* Стиль для ссылок внутри footer */
 footer a {
-  color: #fff;
   text-decoration: none;
   margin: 0 10px;
 }
@@ -74,25 +105,47 @@ footer a:hover {
 
 main {
     margin-bottom: 60px;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 80px;
 }
 
 /* Стиль для логотипа Instagram */
-footer .instagram-logo {
+img[title="Instagram"] {
   width: 20px; /* Размер логотипа Instagram */
   vertical-align: middle; /* Выравнивание по вертикали */
   margin-left: 5px; /* Внешний отступ слева от логотипа */
 }
 
 .advertisement {
-  display: block;
-  text-align: center; /* Центрирование контента в баннере */
-  background-color: #f0f0f0; /* Цвет фона баннера */
   padding: 10px; /* Внутренний отступ вокруг рекламы */
+  text-align: center;
+  height: 150px;
 }
 
 .advertisement img {
   max-width: 100%; /* Установка максимальной ширины изображения для подгонки по размеру контейнера */
   height: auto; /* Автоматическое сохранение пропорций изображения */
+  animation-name: mak_by;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.advertisement img:hover {
+  animation-play-state:paused;
+}
+
+@keyframes mak_by{
+  0%{
+    max-width: 100%;
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(1.15);
+    border-radius: 80px;
+  }
 }
 
 partners {
@@ -100,15 +153,111 @@ partners {
   justify-content: center; /* Выравнивание по горизонтали по центру */
   align-items: center; /* Выравнивание по вертикали по центру */
   padding: 20px; /* Внутренний отступ между компаниями */
-  background-color: #f0f0f0; /* Цвет фона списка партнеров */
 }
 
 .partner-link {
-  margin: 0 10px; /* Внешний отступ между компаниями */
   text-decoration: none; /* Убираем подчеркивание ссылок */
 }
 
 .partner-logo {
-  max-width: 100px; /* Максимальная ширина логотипа */
+  max-width: 80px; /* Максимальная ширина логотипа */
   height: auto; /* Автоматическое сохранение пропорций логотипа */
+  border-radius: 100px;
 }
+
+.partner{
+  border-radius: 100px;
+  border: 2px solid #CB2D6F;
+  box-shadow: 0 0 7px #CB2D6F;
+  float: left;
+  padding: 5px;
+  margin: 3px 10px;
+}
+
+.sidebar{
+  width: 12%;
+  margin-left: 5%;
+  padding: 20px;
+  padding 20px, 2.5%;
+  float: left;
+  line-height:40px;
+  background: #000000;
+  border-radius: 45px;
+  border: 3px solid #14A098;
+}
+
+.sidebar li a {
+  color: #fff;
+  padding:0;
+  text-decoration: none;
+  font-size: 1.1em;
+}
+
+.sidebar li a:hover {
+  color: #14A098;
+}
+
+.sidebar li a:active {
+  color: #71e0ca;
+}
+
+#side_title{
+  color: #14A098;
+  align-text: center;
+  font-family: 'Helvetica', Arial, sans-serif;
+  text-transform: uppercase;
+  }
+
+#services {
+  width: 80%;
+  float: left;
+}
+
+#main_info{
+float: left;
+width: 100%;
+position: relative;
+}
+
+#logos{
+float: left;
+width:100%;
+margin-bottom: 3%;
+}
+
+.amenu{
+  list-style-type: none;
+}
+
+/* начинается с подстроки */
+h3[title^="header"]{
+  color: #501F3A;
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  margin-left: 50px;
+}
+/* заканчивается подстрокой */
+h3[title$="new"]{
+  color: #501F3A;
+}
+
+.catalog{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 40px;
+}
+
+.service{
+  border: 2px solid #CB2D6F;
+  padding: 5px 10px;
+  border-radius: 40px;
+  background: #501F3A;
+  color: white;
+  box-shadow: 0 0 15px #CB2D6F;
+}
+
+#name_company{
+  font-family: 'Open Sans', sans-serif;
+  font-kerning: auto;
+}
+

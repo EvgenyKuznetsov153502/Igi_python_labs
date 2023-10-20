@@ -1,0 +1,15 @@
+h1{
+  margin-top: 80px;
+}
+
+#question-art{
+  background: #d6b7c1;
+  border: 3px solid #CB2D6F;
+  border-radius: 20px;
+  margin: 2% 5%;
+  padding: 15px 30px;
+}
+
+summary:hover{
+  color: #CB2D6F;
+}

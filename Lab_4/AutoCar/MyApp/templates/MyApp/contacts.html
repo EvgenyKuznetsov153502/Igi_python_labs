@@ -1,16 +1,20 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/contacts.css' %}">
 <main xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <h1 align="center">{{title}}</h1>
     {% if contacts.count %}
          {% for c in contacts %}
-            <section>
+            <section class="employee">
                 <img src="{{c.photo.url}}" alt = "photo" width="140" height="150">
+                <div class="info-contacts">
                 <address>{{c.name}}</address>
                 <p><b>Обязанности: </b>{{c.description}}</p>
                 <p><b>Телефон: </b>{{c.telephone}}</p>
                 <p><b>Почта: </b>{{c.email}}</p>
+                </div>
                 <hr>
             </section>
          {% endfor %}

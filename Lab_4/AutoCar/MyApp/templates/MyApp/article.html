@@ -1,16 +1,21 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/article.css' %}">
 <main>
 <h2 align="center">{{title}}</h2>
 {% if new %}
     <article>
         <img src="{{new.photo.url}}" alt = "gsi" width="350" height="250">
         <time datetime="{{new.time_create}}">{{new.time_create}}</time>
-        <p>{{new.content| linebreaks}}</p>
+        <div class="multi-column-text">
+             <p>{{new.content| linebreaks}}</p>
+        </div>
     </article>
     {% else %}
       <p>Ошибка поиска</p>
     {% endif %}
 </main>
 {% endblock %}
+

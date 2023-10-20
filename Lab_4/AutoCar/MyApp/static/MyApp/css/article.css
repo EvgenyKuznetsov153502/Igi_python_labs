@@ -1,0 +1,35 @@
+.multi-column-text {
+  margin-top: 40px;
+  column-count: 2;
+  column-gap: 40px;
+  text-align: justify;
+  pudding: 10px;
+  position: static;
+
+}
+
+.multi-column-text::after {
+  content: "\00A9  Автостоянка AutoCar";
+}
+
+.multi-column-text p::selection {
+  background-color: #d6b7c1;
+}
+
+.multi-column-text p::first-letter {
+  color: #CB2D6F;
+  font-size: 1.5em;
+  font-weight: bold;
+
+}
+
+.multi-column-text p{
+  pudding: 5px;
+  margin :5px;
+  text-indent: 50px;
+  line-height: 1.2; /* межстрочный интервал*/
+  word-spacing: 3px;
+  letter-spacing: 1px;
+  word-wrap: break-word; /*перенос слов*/
+  hyphens: auto; /*разрыв слов*/
+}

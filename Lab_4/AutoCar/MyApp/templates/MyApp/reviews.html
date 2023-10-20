@@ -1,16 +1,18 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/reviews.css' %}">
 <main xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <h1 align="center">{{title}}</h1>
     {% if reviews.count %}
          {% for r in reviews %}
-            <article>
+            <article id="review-arct">
                 <time datetime="{{r.time_create}}">{{r.time_create}}</time>
                 <address>{{r.username}}</address>
                 <p><b>Оценка: </b>{{r.mark}}</p>
                 <p>{{r.content}}</p>
-                <hr>
+
             </article>
         {% endfor %}
     {% else %}
