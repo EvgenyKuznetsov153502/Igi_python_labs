@@ -125,7 +125,7 @@ img[title="Instagram"] {
 
 .advertisement img {
   max-width: 100%; /* Установка максимальной ширины изображения для подгонки по размеру контейнера */
-  height: auto; /* Автоматическое сохранение пропорций изображения */
+  max-height: 95%;
   animation-name: mak_by;
   animation-duration: 1s;
   animation-timing-function: linear;
@@ -245,19 +245,66 @@ h3[title$="new"]{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 40px;
+  box-sizing: border-box;
 }
 
-.service{
-  border: 2px solid #CB2D6F;
-  padding: 5px 10px;
-  border-radius: 40px;
-  background: #501F3A;
-  color: white;
-  box-shadow: 0 0 15px #CB2D6F;
+div, div:before, div:after {
+  transform-style: preserve-3d;
 }
 
 #name_company{
   font-family: 'Open Sans', sans-serif;
   font-kerning: auto;
 }
+
+.service:after {
+  content: '';
+
+  inset: 2rem;
+  transform: translatez(-10em);
+}
+
+.card:before {
+  content: '';
+
+  inset: 0;
+  pointer-events: none;
+}
+
+.card-wrapper{
+  color: white;
+  width: 250px;
+  height: 210px;
+  perspective: 1000px;
+}
+
+.service {
+  --posx: 50%;
+  --posy: 50%;
+  --rotateX: 0;
+  --rotateY: 0;
+  inset: 1rem;
+  transform:
+    perspective(100em)
+    translatez(0em)
+    rotateY(var(--rotateX))
+    rotateX(var(--rotateY));
+  border: 2px solid #CB2D6F;
+  padding: 5px 10px;
+  border-radius: 40px;
+  background: #501F3A;
+  box-shadow: 0 0 15px #CB2D6F;
+  width: 200px;
+  height: 180px;
+  z-index: -3;
+}
+
+@keyframes reset-card{
+  to {
+    transform:
+      rotateY(0)
+      rotateX(0);
+  }
+}
+
 

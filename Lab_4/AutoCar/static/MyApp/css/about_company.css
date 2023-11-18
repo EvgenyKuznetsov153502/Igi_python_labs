@@ -12,13 +12,13 @@
 
 #certificate{
   padding: 40px;
-
   z-index: -1;
   margin: 40px 300px;
-  background-image: url('{% static "MyApp/images/border.png" %}') 30 round round;
+  border: 25px solid red;
+  border-image: url(../images/border.png) 50 round round;
   border-image-slice: 15; /* Размер рамки, которая не будет масштабироваться */
   border-image-repeat: round;
-  /*background-image: linear-gradient(110deg, #d1bac8, #1a4447);*/
+  background-image: linear-gradient(110deg, #d1bac8, #1a4447);
 }
 
 .name_sert{
@@ -114,5 +114,6 @@ input:enabled{
 input:checked {
   background:green;
 }
+
 
 
