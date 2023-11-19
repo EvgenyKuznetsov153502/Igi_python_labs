@@ -2,7 +2,7 @@
 
 {% block content %}
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/question.css' %}"
+<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/question.css' %}">
 <main>
 <h1 align="center">{{header}}</h1>
     {% if questions.count %}
@@ -19,5 +19,12 @@
     {% else %}
       <p>Нету вопросов</p>
     {% endif %}
+    <h3 align="center">Можете ли вы работать у нас?</h3>
+    <form id="age-verification">
+        <label for="dob" id="lab-age-var">Введите дату рождения:</label>
+        <input type="date" id="dob">
+        <br>
+        <button onclick="checkAge()">Проверить возраст</button>
+    </form>
 </main>
 {% endblock %}

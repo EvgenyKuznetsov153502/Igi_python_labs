@@ -1,7 +1,55 @@
-#review-arct{
+.review-arct{
   background: #d6b7c1;
   border: 3px solid #CB2D6F;
   border-radius: 20px;
   margin: 2% 5%;
   padding: 15px 30px;
+}
+
+#review-main{
+    transition: all 0.3s ease;
+}
+
+.dark-mode{
+    color: white;
+    background: #1e3128;
+}
+
+.light-mode{
+    color: black;
+    background: #CCCCCC;
+}
+
+#settings{
+    text-align: center;
+    background: #d6b7c1;
+    height: 180px;
+    border: 3px solid #CB2D6F;
+    border-radius: 20px;
+    margin: 2% 30%;
+    padding: 10px 30px;
+}
+
+.font-label{
+    padding: 10px;
+}
+
+#background-label{
+    margin-top: 30px;
+}
+
+#font-set{
+    margin-top: 40px;
+}
+
+.small-text {
+   font-size: 0.9em;
+}
+
+.medium-text {
+    font-size: 1em;
+}
+
+.large-text {
+    font-size: 1.13em;
 }

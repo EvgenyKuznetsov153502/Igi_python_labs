@@ -13,3 +13,23 @@ h1{
 summary:hover{
   color: #CB2D6F;
 }
+
+#age-verification{
+    background: #d6b7c1;
+    border: 3px solid #CB2D6F;
+    border-radius: 20px;
+    margin: 2% 32%;
+    padding: 15px 30px;
+    text-align: center;
+}
+
+#dob{
+    margin: 10px;
+    padding: 2px; 10px;
+}
+
+#age-verification button{
+    position: relative;
+    margin-top: 10px;
+    left: 150px;
+}

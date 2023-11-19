@@ -3,11 +3,12 @@
 {% block content %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/reviews.css' %}">
-<main xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<main xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+        id="review-main">
 <h1 align="center">{{title}}</h1>
     {% if reviews.count %}
          {% for r in reviews %}
-            <article id="review-arct">
+            <article class="review-arct">
                 <time datetime="{{r.time_create}}">{{r.time_create}}</time>
                 <address>{{r.username}}</address>
                 <p><b>Оценка: </b>{{r.mark}}</p>
@@ -18,6 +19,32 @@
     {% else %}
       <p>Отсутствуют отзывы</p>
     {% endif %}
-    <a href="{% url 'add_review_button' %}"><button>Добавить отзыв</button></a>
+    <a href="{% url 'add_review_button' %}" ><button>Добавить отзыв</button></a>
+    <h2 align="center">Настройки</h2>
+    <div id="settings">
+        <form id="settingsForm">
+            <div id="font-set">
+                <label class="font-label">
+                    <input type="radio" name="fontSize" value="small" class="font-size-radio">
+                    Мелкий шрифт
+                </label>
+                <label class="font-label">
+                    <input type="radio" name="fontSize" value="medium" class="font-size-radio" checked>
+                    Средний шрифт
+                </label>
+                <label class="font-label">
+                    <input type="radio" name="fontSize" value="large" class="font-size-radio">
+                    Большой шрифт
+                </label>
+            </div>
+            <br>
+            <div id ="background-label">
+                <label>
+                    <input type="checkbox" name="bgColor" id="bgColorCheckbox">
+                    Темная тема
+                </label>
+            <div>
+        </form>
+    </div>
 </main>
 {% endblock %}
