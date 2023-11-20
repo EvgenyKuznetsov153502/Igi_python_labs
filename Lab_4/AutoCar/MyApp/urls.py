@@ -28,7 +28,11 @@ urlpatterns = [
     path('review_handler/', review_handler, name="review_handler"),
     path('contacts/', contacts, name="contacts"),
     path('vacancies/', vacancies, name="vacancies"),
-    path('coupons/', coupons, name="coupons")
+    path('coupons/', coupons, name="coupons"),
+    path('table_game/', table_game, name="table_game"),
+    path('array/', array, name="array")
+
+
     # path('cars/<int:carid>/', cars),  # http://127.0.0.1:8000/cars/
     # re_path(r'^archive/(?P<year>[0-9]{4})/', archive),  # http://127.0.0.1:8000/cars/
 ]

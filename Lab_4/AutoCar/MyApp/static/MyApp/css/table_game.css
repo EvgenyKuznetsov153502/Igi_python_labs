@@ -1,0 +1,63 @@
+#table-game table{
+    border-collapse: collapse;
+    margin: 20px;
+}
+
+#table-game td, table-game th {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+.selected {
+    background-color: yellow;
+}
+
+#table-game #container-for-game{
+    background: red;
+    text-align: center;
+    padding: 25px;
+    background: black;
+    color: white;
+    width: 50%;
+    height: 200px;
+    margin: 3% 25%;
+    border-radius: 40px;
+    border: 3px solid #CB2D6F;
+    box-shadow: 0 0 15px #CB2D6F;
+}
+
+#table-game button{
+  background: #501F3A;
+  width: 200px;
+  height: 45px;
+  border-radius:15px;
+  font-size: 0.9em;
+  border: 2px solid #CB2D6F;
+  cursor: pointer;
+  color: white;
+  margin: 20px;
+}
+
+#table-game button:hover{
+  background: #d68aa4;
+}
+
+#table-game button:active{
+  background: #d6b7c1;
+}
+
+.even {
+     background-color: green;
+}
+
+.odd {
+      background-color: yellow;
+}
+#wrap {
+    text-align: center;
+}
+
+#myTable {
+    margin: 0 auto;
+}

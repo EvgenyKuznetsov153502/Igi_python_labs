@@ -96,7 +96,9 @@ aside_menu = [
     {'title': "Вопросы", 'url_name': 'question'},
     {'title': "Контакты", 'url_name': 'contacts'},
     {'title': "Вакансии", 'url_name': 'vacancies'},
-    {'title': "Купоны", 'url_name': 'coupons'}
+    {'title': "Купоны", 'url_name': 'coupons'},
+    {'title': "Таблица", 'url_name': 'table_game'},
+    {'title': "Массив", 'url_name': 'array'}
 ]
 
 
@@ -583,6 +585,24 @@ def coupons(request):
         'coupon': coupon
     }
     return render(request, 'MyApp/coupon.html', context=context)
+
+
+def table_game(request):
+    new_menu = get_menu(request)
+    context = {
+        'title': "Таблица",
+        'menu': new_menu,
+    }
+    return render(request, 'MyApp/table_game.html', context=context)
+
+
+def array(request):
+    new_menu = get_menu(request)
+    context = {
+        'title': "Массив",
+        'menu': new_menu,
+    }
+    return render(request, 'MyApp/array.html', context=context)
 
 
 def pageNotFound(request, exception):

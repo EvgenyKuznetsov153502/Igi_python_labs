@@ -1,0 +1,31 @@
+{% extends 'MyApp/base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/array.css' %}">
+<main id="main-arr">
+    <div id="h-wrap">
+    <h1 align="center" onclick="changeColor()" id="arr-title">{{title}}</h1>
+    </div>
+    <div id="toy-wrapper">
+        <form id="toyForm">
+            <label for="toyName">Название игрушки:</label>
+            <input type="text" id="toyName" required>
+            <br><br>
+            <label for="toyCost">Стоимость в рублях:</label>
+            <input type="number" id="toyCost" required min="0">
+            <br><br>
+            <label for="ageRange">Возрастные границы:</label>
+            <input type="text" id="ageRange" required>
+            <br><br>
+            <button type="button" onclick="addNewToy()">Добавить игрушку</button>
+            <button type="button" onclick="findExpensiveToys()">Найти дорогие игрушки</button>
+        </form>
+        <div id="toy-info">
+            <h2 align="center">Информация</h2>
+            <div id="arrayContent"></div>
+            <div id="result"></div>
+        </div>
+    </div>
+</main>
+{% endblock %}
