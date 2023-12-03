@@ -55,7 +55,7 @@ window.addEventListener('focus', handlePageFocus);
 window.addEventListener('blur', handlePageBlur);
 
 
-// Объемные карточки
+// О    бъемные карточки
 
 const cards = document.querySelectorAll(".card-wrapper");
 
