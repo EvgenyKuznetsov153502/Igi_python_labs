@@ -1,6 +1,8 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+<main>
+     {% load static %}
 <h2>{{title}}</h2>
 {% if my_clients.count %}
     <ul>
@@ -15,4 +17,9 @@
     {% else %}
       <p>Нету ни одного клиента</p>
     {% endif %}
+    <h2>Изменение таймера</h2>
+    <label for="intervalInput">Интервал (в мс): </label>
+    <input type="number" id="intervalInput" value="1000" min="100" step="100">
+    <button onclick="changeInterval()">Применеть</button>
+    </main>
 {% endblock %}

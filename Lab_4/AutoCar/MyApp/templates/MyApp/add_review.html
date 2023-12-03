@@ -1,0 +1,31 @@
+{% extends 'MyApp/base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/add_review.css' %}">
+<main>
+<h1 align="center">{{title}}</h1>
+    <form action="{% url 'review_handler' %}"  method="post">
+        {% csrf_token %}
+
+        <div id="input-rate">
+            <label for="rating" class="lab-review">Оценка</label>
+            <select id="rating" name="rating" required>
+                <option value="" disabled selected>Выберите оценку</option>
+                {% for mark in marks %}
+                <option value="{{mark}}">{{mark}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <div id="input-field">
+            <label class="lab-review">Отзыв:</label>
+            <textarea id="review" name="review" rows="7" cols="70" required></textarea>
+        </div>
+        <br>
+        <div class="but">
+            <input type="submit" value="Отправить" id="button-send" align="right">
+        </div>
+    </form>
+</main>
+{% endblock %}

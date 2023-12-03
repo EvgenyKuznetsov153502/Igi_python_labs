@@ -1,6 +1,7 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+<main>
 {% if space.count %}
       {% for c in space %}
       <div class="client-info">
@@ -28,5 +29,5 @@
     {% else %}
       <p>Нету парковочного места с таким id</p>
     {% endif %}
-
+</main>
 {% endblock %}

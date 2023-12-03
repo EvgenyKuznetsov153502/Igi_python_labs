@@ -91,3 +91,94 @@ class Client(models.Model):
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
         ordering = ['name']
+
+
+class News(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    short_description = models.TextField()
+    time_create = models.DateTimeField(auto_now_add=True)
+    photo = models.ImageField(upload_to="news_images/%Y/%m/%d/")
+
+    def get_absolute_url(self):
+        return reverse('article', kwargs={'news_id': self.pk})
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
+        ordering = ['title']
+
+
+class Question(models.Model):
+    content = models.TextField()
+    answer = models.TextField()
+    time_create = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.content
+
+    class Meta:
+        verbose_name = 'Вопрос'
+        verbose_name_plural = 'Вопросы'
+        ordering = ['time_create']
+
+
+class Vacancy(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Вакансия'
+        verbose_name_plural = 'Вакансии'
+        ordering = ['name']
+
+
+class Review(models.Model):
+    username = models.CharField(max_length=255)
+    mark = models.IntegerField()
+    content = models.TextField()
+    time_create = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.content
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+        ordering = ['-time_create']
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=255)
+    description = models.TextField()
+    is_valid = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = 'Купон'
+        verbose_name_plural = 'Купоны'
+        ordering = ['code']
+
+
+class Employee(models.Model):
+    name = models.CharField(max_length=255)
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/")
+    description = models.TextField()
+    telephone = models.CharField(max_length=20)
+    email = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Сотрудник'
+        verbose_name_plural = 'Сотрудники'
+        ordering = ['name']

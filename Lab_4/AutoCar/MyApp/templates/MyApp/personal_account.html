@@ -1,6 +1,9 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+  {% load static %}
+ <link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/personal_account.css' %}">
+<main>
 <div class="data-container">
     <p>Часовой пояс: {{zone}}</p>
     <p>Дата: {{cur_date}}</p>
@@ -8,11 +11,14 @@
     <p>USD: {{USD}}</p>
     <p>EUR: {{EUR}}</p>
 </div>
+    <div id="countdown">
+        Обратный отсчет
+    </div>
 <h1>Добро пожаловать, {{user_name}}!</h1>
 <h2>Ваши автомобили:</h2>
 
 {% if my_cars.count %}
-    <ul>
+    <ul class="personal_auto">
 
       {% for c in my_cars %}
       <li>
@@ -24,4 +30,5 @@
     {% else %}
       <p>Нету ни одной машины</p>
     {% endif %}
+    </main>
 {% endblock %}

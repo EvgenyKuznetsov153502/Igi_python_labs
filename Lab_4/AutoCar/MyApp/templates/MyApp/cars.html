@@ -1,6 +1,7 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+<main>
 <h1>{{title}}</h1>
 {% if my_cars.count %}
     <ul>
@@ -15,4 +16,5 @@
     {% else %}
       <p>Нету ни одной машины</p>
     {% endif %}
+</main>
 {% endblock %}

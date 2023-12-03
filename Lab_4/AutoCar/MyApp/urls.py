@@ -17,7 +17,22 @@ urlpatterns = [
     path('debts/', max_debt, name='debts'),
     path('logout/', logout_user, name='logout'),
     path('personal_account/', personal_account, name='personal_account'),
-    path('chart_view/', chart_view, name='chart_view')
+    path('chart_view/', chart_view, name='chart_view'),
+    path('about_company/', about_company, name='about_company'),
+    path('news.css/', news, name='news.css'),
+    path('news.css/<int:news_id>/', article, name="article"),
+    path('questions/', questions, name="question"),
+    path('reviews/', reviews,  name="reviews"),
+    path('add_review_button/', add_review_button, name="add_review_button"),
+    path('add_review/', add_review, name="add_review"),
+    path('review_handler/', review_handler, name="review_handler"),
+    path('contacts/', contacts, name="contacts"),
+    path('vacancies/', vacancies, name="vacancies"),
+    path('coupons/', coupons, name="coupons"),
+    path('table_game/', table_game, name="table_game"),
+    path('array/', array, name="array")
+
+
     # path('cars/<int:carid>/', cars),  # http://127.0.0.1:8000/cars/
     # re_path(r'^archive/(?P<year>[0-9]{4})/', archive),  # http://127.0.0.1:8000/cars/
 ]

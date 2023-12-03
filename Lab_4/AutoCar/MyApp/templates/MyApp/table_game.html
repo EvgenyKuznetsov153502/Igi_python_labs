@@ -1,0 +1,26 @@
+{% extends 'MyApp/base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/table_game.css' %}">
+<main id="table-game">
+    <h1 align="center">{{title}}</h1>
+    <div id="container-for-game">
+        <label for="sizeInput">Введите размер таблицы:</label>
+        <input type="number" id="sizeInput" min="1" value="3">
+        <br>
+        <button onclick="generateTable()" id="generateTable">Создать таблицу</button>
+        <button onclick="transposeTable()" id="transposeTable">Транспонировать</button>
+        <br>
+        <label for="nInput">Максимальное количество выделенных ячеек в ряду/столбце:</label>
+        <input type="number" id="nInput" min="1" value="1">
+        <br>
+        <button onclick="addRow()" id="addRow">Добавить ряд</button>
+        <button onclick="addColumn()" id="addColumn">Добавить колонку</button>
+    </div>
+    <br><br><br>
+    <div id="wrap">
+        <table id="myTable"></table>
+    </div>
+</main>
+{% endblock %}

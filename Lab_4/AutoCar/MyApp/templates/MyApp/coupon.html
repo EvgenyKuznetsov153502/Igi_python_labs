@@ -1,0 +1,62 @@
+{% extends 'MyApp/base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'MyApp/css/coupon.css' %}">
+<main>
+<h1 align="center">{{title}}</h1>
+    {% if coupon.count %}
+    <div id="table-wrapper">
+    <table border="1" cellpadding="10px" summary="Coupons" id="coupon-table">
+        <caption>Действующие</caption>
+         <td colspan="2"></td>
+        <tr>
+            <th id="code">Код купона</th>
+            <th id="description">Описание</th>
+        </tr>
+        {% for c in coupon %}
+            <tr>
+                <td headers="code">{{c.code}}</td>
+                <td headers="description">{{c.description}}</td>
+            </tr>
+        {% endfor %}
+        <tr align="center">
+            <td colspan="2">Следите за обновлениями ;)</td>
+        </tr>
+        <td colspan="2"></td>
+    </table>
+    </div>
+    {% else %}
+      <p>Отсутствуют купоны</p>
+    {% endif %}
+    <div id="calc-coupons">
+        <form id="product-form">
+            <label for="sel-product">Услуга</label>
+                <select id="sel-product" required>
+                    <option value="Отопление">Отопление</option>
+                    <option value="Наблюдение">Наблюдение</option>
+                    <option value="Контроль">Контроль</option>
+                    <option value="Парковочное место">Парковочное место</option>
+                </select>
+            <br><br>
+            <label for="sel-coup">Купон</label>
+                <select id="sel-coup" required>
+                    <option value="10autocar10">10autocar10</option>
+                    <option value="3Cars">3Cars</option>
+                    <option value="777">777</option>
+                </select>
+            <br><br><br>
+            <button type="button" onclick="CalcInfo()" >Расчитать</button>
+        </form>
+        <div id="prod-info">
+            <h2>Информация</h2>
+            <p id="name-product">Название услуги: </p>
+            <p id="price-product">Цена до скидки: </p>
+            <p id="name-coupon">Название купона: </p>
+            <p id="value-coupon">Процент скидки: </p>
+            <strong id="result-price">Итоговая стоимость: </strong>
+        </div>
+    </div>
+
+</main>
+{% endblock %}

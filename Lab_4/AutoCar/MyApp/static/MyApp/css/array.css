@@ -1,0 +1,53 @@
+#main-arr button{
+  background: #501F3A;
+  width: 200px;
+  height: 45px;
+  border-radius:15px;
+  font-size: 0.9em;
+  border: 2px solid #CB2D6F;
+  cursor: pointer;
+  color: white;
+  margin: 10px;
+}
+
+#main-arr button:hover{
+  background: #d68aa4;
+}
+
+#main-arr button:active{
+  background: #d6b7c1;
+}
+
+#toyForm{
+  background: #000;
+  width: 28%;
+  height: 185px;
+  margin: 5% 5%;
+  border-radius: 40px;
+  padding: 40px;
+  border: 3px solid #CB2D6F;
+  box-shadow: 0 0 15px #CB2D6F;
+  color: white;
+  float: left;
+}
+
+#toy-info{
+    float: left;
+    margin: 3% 5%;
+    width: 45%;
+}
+
+#main-arr h1:hover{
+    font-size: 60px;
+    text-shadow: 5px 5px 8px rgba(203, 45, 111, 0.9);
+    cursor: pointer;
+}
+
+#h-wrap{
+    height: 70px;
+    margin: 0px 43%;
+}
+
+.pink {
+   color: #501F3A;
+}

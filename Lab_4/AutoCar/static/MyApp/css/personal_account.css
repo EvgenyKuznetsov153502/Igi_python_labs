@@ -1,0 +1,30 @@
+.data-container {
+  position: fixed;
+  top: 70px;
+  right: 10px;
+  background-color: #000000;
+  color: #fff;
+  padding: 30px;
+  border-radius: 40px;
+  margin:20px;
+  border: 3px solid #14A098;
+}
+
+.personal_auto li a{
+    text-decoration: none;
+}
+
+.personal_auto li a:visited{
+    color: #14A098;
+}
+
+.personal_auto li a:link {
+    color: #CB2D6F;
+}
+
+.personal_auto li a:hover {
+    color: #0F292F;
+    font-weight:bold;
+}
+
+

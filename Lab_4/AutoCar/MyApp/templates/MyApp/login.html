@@ -1,6 +1,7 @@
 {% extends 'MyApp/base.html' %}
 
 {% block content %}
+<main>
 <h1><ul>{{title}}</ul></h1>
 
  <form method="post">
@@ -8,6 +9,6 @@
     {{form.as_p}}
     <button type="submit">Войти</button>
 </form>
-
+</main>
 
 {% endblock %}

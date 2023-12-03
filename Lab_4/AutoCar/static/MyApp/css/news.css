@@ -1,0 +1,21 @@
+#short_description{
+  width: 90%;
+  margin: 2% 5%;
+  border: 2px solid #CB2D6F;
+  border-radius: 20px;
+  padding: 2px 20px;
+  background: #d6b7c1;
+  height: 60px;
+  overflow: hidden;
+}
+
+#short_description p {
+  white-space: nowrap; /* Предотвращает перенос текста на новую строку */
+  overflow: hidden; /* Обрезать текст, который не помещается */
+  text-overflow: ellipsis; /* Добавить многоточие (...) к обрезанному тексту */
+}
+
+
+
+
+

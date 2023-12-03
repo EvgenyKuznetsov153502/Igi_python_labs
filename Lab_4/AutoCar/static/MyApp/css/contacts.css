@@ -1,0 +1,15 @@
+.employee {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.employee img {
+  max-width: 120px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.info-contacts{
+  flex: 1;
+}

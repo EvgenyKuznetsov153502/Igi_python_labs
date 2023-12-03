@@ -58,29 +58,21 @@ def is_admin(user):
     return user.is_superuser
 
 
-menu = [
-    {'title': "Главная страница", 'url_name': 'home'},
-    {'title': "Регистрация", 'url_name': 'register'},
-    {'title': "Войти", 'url_name': 'login'},
-    {'title': "Клиенты", 'url_name': 'clients'},
-    {'title': "Авто", 'url_name': 'cars'},
-    {'title': "Парковочные места", 'url_name': 'parking_spaces'},
-    {'title': "Долги", 'url_name': 'debts'},
-    {'title': "Выйти", 'url_name': 'logout'}
-]
-
-
 def get_menu(request):
-    user_menu = menu.copy()
+    # user_menu = menu.copy()
     if not request.user.is_authenticated:
         new_menu = [  # для незарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
+            {'title': "Новости", 'url_name': 'news.css'},
+            {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Регистрация", 'url_name': 'register'},
             {'title': "Войти", 'url_name': 'login'}
         ]
     elif request.user.is_staff:
         new_menu = [  # для адмниа
             {'title': "Главная страница", 'url_name': 'home'},
+            {'title': "Новости", 'url_name': 'news.css'},
+            {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Клиенты", 'url_name': 'clients'},
             {'title': "Авто", 'url_name': 'cars'},
             {'title': "Парковочные места", 'url_name': 'parking_spaces'},
@@ -92,9 +84,22 @@ def get_menu(request):
         new_menu = [  # для зарегистрированных
             {'title': "Главная страница", 'url_name': 'home'},
             {'title': "Личный кабинет", 'url_name': 'personal_account'},
+            {'title': "Новости", 'url_name': 'news.css'},
+            {'title': "Отзывы", 'url_name': 'reviews'},
             {'title': "Выйти", 'url_name': 'logout'}
         ]
     return new_menu
+
+
+aside_menu = [
+    {'title': "О компании", 'url_name': 'about_company'},
+    {'title': "Вопросы", 'url_name': 'question'},
+    {'title': "Контакты", 'url_name': 'contacts'},
+    {'title': "Вакансии", 'url_name': 'vacancies'},
+    {'title': "Купоны", 'url_name': 'coupons'},
+    {'title': "Таблица", 'url_name': 'table_game'},
+    {'title': "Массив", 'url_name': 'array'}
+]
 
 
 def home(request):
@@ -103,6 +108,7 @@ def home(request):
     num_of_cars = Car.objects.all().count()
     spaces = ParkingSpace.objects.all()
     num_of_spaces = spaces.count()
+    last_news = News.objects.latest('time_create')
 
     total_price = 0
     for s in spaces:
@@ -119,7 +125,9 @@ def home(request):
         'menu': new_menu,
         'num_of_clients': num_of_clients,
         'num_of_cars': num_of_cars,
-        'average_price': average_price
+        'average_price': average_price,
+        'last_news': last_news,
+        'aside_menu': aside_menu
     }
 
     return render(request, 'MyApp/home.html', context=context)
@@ -385,8 +393,10 @@ def register(request):
 
 menu_for_reg = [
     {'title': "Главная страница", 'url_name': 'home'},
+    {'title': "Новости", 'url_name': 'news.css'},
+    {'title': "Отзывы", 'url_name': 'reviews'},
     {'title': "Регистрация", 'url_name': 'register'},
-    {'title': "Войти", 'url_name': 'login'}
+    {'title': "Войти", 'url_name': 'login'},
 ]
 
 
@@ -455,6 +465,144 @@ def chart_view(request):
     buffer = io.BytesIO()
     plt.savefig(buffer, format='png')
     return HttpResponse(buffer.getvalue(), content_type='image/png')
+
+
+def about_company(request):
+    new_menu = get_menu(request)
+    context = {
+        'title': 'О компании',
+        'menu': new_menu
+    }
+    return render(request, 'MyApp/about_company.html', context=context)
+
+
+def news(request):
+    articles = News.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': 'Новости',
+        'menu': new_menu,
+        'news': articles
+    }
+    return render(request, 'MyApp/news.html', context=context)
+
+
+def article(request, news_id):
+    new = News.objects.get(id=news_id)
+    title = new.title
+    new_menu = get_menu(request)
+    context = {
+        'title': title,
+        'menu': new_menu,
+        'new': new
+    }
+    return render(request, 'MyApp/article.html', context=context)
+
+
+def questions(request):
+    questions = Question.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': "Вопросы",
+        'header': "Часто задаваемые вопросы",
+        'menu': new_menu,
+        'questions':  questions
+    }
+    return render(request, 'MyApp/questions.html', context=context)
+
+
+def reviews(request):
+    rev = Review.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': "Отзывы",
+        'menu': new_menu,
+        'reviews': rev
+    }
+    return render(request, 'MyApp/reviews.html', context=context)
+
+
+def add_review_button(request):
+    if request.user.is_authenticated:
+        return redirect('add_review')
+    else:
+        return redirect('register')
+
+
+def add_review(request):
+    new_menu = get_menu(request)
+    marks = range(1, 11)
+    context = {
+        'title': "Добавление отзыва",
+        'menu': new_menu,
+        'marks': marks
+    }
+    return render(request, 'MyApp/add_review.html', context=context)
+
+
+def review_handler(request):
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        review = request.POST.get('review')
+        user_name = request.user.username
+        rev = Review()
+        rev.username = user_name
+        rev.content = review
+        rev.mark = rating
+        rev.save()
+        return redirect('reviews')
+    return redirect('add_review_button')
+
+
+def contacts(request):
+    contact = Employee.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': "Контакты",
+        'menu': new_menu,
+        'contacts': contact
+    }
+    return render(request, 'MyApp/contacts.html', context=context)
+
+
+def vacancies(request):
+    vacancy = Vacancy.objects.all()
+    new_menu = get_menu(request)
+    context = {
+        'title': "Вакансии",
+        'menu': new_menu,
+        'vacancy': vacancy
+    }
+    return render(request, 'MyApp/vacancy.html', context=context)
+
+
+def coupons(request):
+    coupon = Coupon.objects.filter(is_valid=True)
+    new_menu = get_menu(request)
+    context = {
+        'title': "Купоны",
+        'menu': new_menu,
+        'coupon': coupon
+    }
+    return render(request, 'MyApp/coupon.html', context=context)
+
+
+def table_game(request):
+    new_menu = get_menu(request)
+    context = {
+        'title': "Таблица",
+        'menu': new_menu,
+    }
+    return render(request, 'MyApp/table_game.html', context=context)
+
+
+def array(request):
+    new_menu = get_menu(request)
+    context = {
+        'title': "Массив",
+        'menu': new_menu,
+    }
+    return render(request, 'MyApp/array.html', context=context)
 
 
 def pageNotFound(request, exception):
